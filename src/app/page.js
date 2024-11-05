@@ -2,39 +2,37 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
 
 export default function Home() {
     const projects = [
-        {
-            src: "/project1.png",
-            title: "Mieszkanie 42 m²",
-            description: "Zmiana układu funkcjonalnego, całkowita zmiana wnętrza",
-        },
-        {
-            src: "/project2.png",
-            title: "Salon 45m²",
-            description: "Stan deweloperski, kompleksowy projekt całego domu",
-        },
-        {
-            src: "/project3.png",
-            title: "Łazienka 5m²",
-            description: "Łazienka na parterze dla gości, kompleksowy projekt",
-        },
-        {
-            src: "/project4.png",
-            title: "Sypialnia 18 m²",
-            description: "Sypialnia z detalami Hampton",
-        },
+        { src: "/project1.png", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita zmiana wnętrza" },
+        { src: "/project2.png", title: "Salon 45m²", description: "Stan deweloperski, kompleksowy projekt całego domu" },
+        { src: "/project3.png", title: "Łazienka 5m²", description: "Łazienka na parterze dla gości, kompleksowy projekt" },
+        { src: "/project4.png", title: "Sypialnia 18 m²", description: "Sypialnia z detalami Hampton" },
     ];
 
-    const itemsPerView = 3;
+    const isMobile = useMediaQuery({ maxWidth: 768 });
+    const itemsPerView = isMobile ? 1 : 3; // Show one item on mobile, three on desktop
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isBouncing, setIsBouncing] = useState(false);
     const carouselRef = useRef(null);
 
-    // Intersection Observer to trigger bounce animation when the carousel is in view
+    // Swiping functionality for touch devices
+    const handleTouchStart = useRef(0);
+    const handleTouchMove = useRef(0);
+
+    const onTouchStart = (e) => (handleTouchStart.current = e.touches[0].clientX);
+    const onTouchMove = (e) => (handleTouchMove.current = e.touches[0].clientX);
+    const onTouchEnd = () => {
+        const diff = handleTouchStart.current - handleTouchMove.current;
+        if (diff > 50) goToNextSlide();
+        else if (diff < -50) goToPrevSlide();
+    };
+
+    // Intersection Observer to trigger bounce animation
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -42,7 +40,7 @@ export default function Home() {
                 if (entry.isIntersecting) {
                     setIsBouncing(true);
                     observer.disconnect();
-                    setTimeout(() => setIsBouncing(false), 1000); // Reset bounce after animation completes
+                    setTimeout(() => setIsBouncing(false), 1000);
                 }
             },
             { threshold: 0.5 }
@@ -86,7 +84,7 @@ export default function Home() {
         );
     }, [projects.length]);
 
-    // Enable keyboard navigation and close modal with Esc
+    // Keyboard navigation and close modal with Esc
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (isModalOpen) {
@@ -104,27 +102,34 @@ export default function Home() {
             {/* Header */}
             <header className="flex justify-between items-center p-4 header-shadow">
                 <div className="p-1">
-                    <Image src="/logo.png" alt="Logo" width={30} height={30}/>
+                    <Image src="/logo.png" alt="Logo" width={30} height={30} />
                 </div>
                 <nav className="flex-1 flex justify-center text-black text-sm font-medium space-x-6">
                     <a href="#projects" className="hover:text-gray-900">Projekty</a>
                     <a href="#about" className="hover:text-gray-900">O mnie</a>
+                    <a href="#offer" className="hover:text-gray-900">Oferta</a>
                     <a href="#contact" className="hover:text-gray-900">Kontakt</a>
                 </nav>
             </header>
 
             {/* Hero Section */}
             <section className="relative h-[60vh] flex items-center justify-center bg-gray-100">
-                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
+                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100" />
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
-                    <Image src="/logo_light.png" alt="Logo" width={105} height={116}/>
+                    <Image src="/logo_light.png" alt="Logo" width={105} height={116} />
                     <h1 className="text-5xl font-thin tracking-wider mt-4">ADELINA INTERIORS</h1>
                 </div>
             </section>
 
             {/* Project Gallery Carousel */}
-            <section id="projects" className="py-16 px-4 flex flex-col items-center bg-gray-100">
+            <section
+                id="projects"
+                className="py-16 px-4 flex flex-col items-center bg-gray-100"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+            >
                 <div
                     ref={carouselRef}
                     className="relative max-w-screen-xl bg-white shadow-lg overflow-hidden p-4"
@@ -138,8 +143,11 @@ export default function Home() {
                         {projects.map((project, index) => (
                             <div
                                 key={index}
-                                className="w-1/3 p-2 flex-shrink-0"
-                                style={{ minWidth: `calc(100% / ${itemsPerView})`, minHeight: "400px" }}
+                                className="p-2 flex-shrink-0"
+                                style={{
+                                    minWidth: `calc(100% / ${itemsPerView})`,
+                                    minHeight: "400px"
+                                }}
                                 onClick={() => openModal(index)}
                             >
                                 <div className="relative w-full h-[250px] overflow-hidden drop-shadow">
@@ -160,22 +168,24 @@ export default function Home() {
                 </div>
 
                 {/* Arrows Positioned Below the Carousel */}
-                <div className="flex justify-between w-full max-w-screen-xl mt-4 px-4">
-                    {currentIndex > 0 ? (
-                        <button onClick={goToPrevSlide} className="text-gray-700 text-4xl">
-                            ←
-                        </button>
-                    ) : (
-                        <span className="text-gray-300 text-4xl">←</span>
-                    )}
-                    {currentIndex < projects.length - itemsPerView ? (
-                        <button onClick={goToNextSlide} className="text-gray-700 text-4xl">
-                            →
-                        </button>
-                    ) : (
-                        <span className="text-gray-300 text-4xl">→</span>
-                    )}
-                </div>
+                {!isMobile && (
+                    <div className="flex justify-between w-full max-w-screen-xl mt-4 px-4">
+                        {currentIndex > 0 ? (
+                            <button onClick={goToPrevSlide} className="text-gray-700 text-4xl">
+                                ←
+                            </button>
+                        ) : (
+                            <span className="text-gray-300 text-4xl">←</span>
+                        )}
+                        {currentIndex < projects.length - itemsPerView ? (
+                            <button onClick={goToNextSlide} className="text-gray-700 text-4xl">
+                                →
+                            </button>
+                        ) : (
+                            <span className="text-gray-300 text-4xl">→</span>
+                        )}
+                    </div>
+                )}
             </section>
 
             {/* Fullscreen Modal for Project Images */}
@@ -211,21 +221,108 @@ export default function Home() {
                     </div>
                 </div>
             )}
+            {/* Offer Section */}
+            <section id="offer" className="py-16 px-6 pb-40">
+                <div className="max-w-screen-lg mx-auto">
+                    <h2 className="text-3xl font-semibold mb-8 text-left">Oferta</h2>
+                    <p className="text-lg mb-10 text-left">
+                        Kompleksowy projekt wnętrz obejmuje pełen zakres usług, od wstępnych pomiarów po finalne dokumentacje techniczne, zapewniając estetyczne i funkcjonalne przestrzenie.
+                    </p>
+                    <div className="grid gap-12 md:gap-8 md:grid-cols-2">
+
+                        {/* Step 1: Inwentaryzacja */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">1</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Inwentaryzacja</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Precyzyjne pomiary przestrzeni, stanowiące solidną podstawę do tworzenia dokładnych i realistycznych projektów.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 2: Projekt Koncepcyjny */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">2</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Projekt Koncepcyjny</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Układ pomieszczeń z propozycjami ścian działowych, mebli i sanitariatów, a następnie opracowujemy ostateczną koncepcję.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 3: Wizualizacje */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">3</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Wizualizacje</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Fotorealistyczne wizualizacje wnętrz, oddające zaprojektowane elementy i umożliwiające zobaczenie przyszłego efektu.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 4: Wykaz materiałów i mebli */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">4</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Wykaz materiałów i mebli</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Zestawienie materiałów i wyposażenia z nazwami, adresami sklepów i ilościami, co ułatwia proces zakupu i pozwala kontrolować koszty.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 5: Przygotowywanie zamówień */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">5</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Przygotowywanie zamówień</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Pomoc w zamówieniach u sprawdzonych dostawców, zapewniając pełne wsparcie i kontakt w celu ułatwienia zakupów.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 6: Dokumentacja techniczna */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">6</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Dokumentacja techniczna</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Kompleksowa dokumentacja projektowa, zawierająca szczegółowe rysunki techniczne dla wykonawców, zgodne z wizją klienta.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Step 7: Wycena prac wykończeniowych */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-2xl font-bold text-red-900">7</div>
+                            <div>
+                                <h3 className="text-xl font-semibold">Wycena prac wykończeniowych</h3>
+                                <p className="text-gray-700 mt-1">
+                                    Na życzenie klienta oferuję wycenę prac wykończeniowych u zaufanych ekip budowlanych, zapewniając najwyższą jakość realizacji.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
 
             {/* O mnie Section */}
             <section id="about" className="py-0 bg-white flex flex-col md:flex-row">
-                {/* Profile Image on the Left */}
-                <div className="md:w-1/2 h-80 relative overflow-hidden"> {/* Adjust height here */}
+                <div className="md:w-1/3 h-80 relative overflow-hidden">
                     <Image
-                        src="/profile.jpg" // Ensure this path is correct
+                        src="/profile.jpg"
                         alt="Adelina"
-                        layout="fill" // This allows the image to fill the container
-                        objectFit="cover" // Ensures the image covers the entire area without distortion
-                        className="rounded-l-lg" // Optional rounding for aesthetics
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-l-lg"
                     />
                 </div>
-
-                {/* Text Content on the Right */}
                 <div className="md:w-1/2 flex items-center justify-center p-6">
                     <div>
                         <h2 className="text-3xl font-extralight mb-4">O mnie</h2>
@@ -237,12 +334,12 @@ export default function Home() {
             </section>
 
             {/* Contact Section */}
-            <section id="contact" className="py-16 px-6 flex flex-col items-center bg-gray-100">
+            <section id="contact" className="py-16 px-6 pt-28 flex flex-col items-center bg-gray-100">
                 <h2 className="text-3xl font-extralight mb-4">Kontakt</h2>
                 <p className="text-lg mb-4">Umów się na bezpłatną konsultację :)</p>
-                <div className="text-lg mb-4">
+                <div className="text-lg mb-4 text-center">
                     <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-blue-500 hover:underline">adelina.drabot@gmail.com</a></p>
-                    <p>Telefon: <a href="tel:+48600436570" className="text-blue-500 hover:underline">+48 600 436 570</a></p>
+                    <p>Telefon: <a href="tel:+48504381057" className="text-blue-500 hover:underline">+48 504 381 057</a></p>
                     <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">@adelina.interiors</a></p>
                 </div>
             </section>
@@ -250,7 +347,7 @@ export default function Home() {
             {/* Footer */}
             <footer className="py-8 flex flex-col items-center text-gray-950 text-sm">
                 <div>
-                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
+                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30} />
                 </div>
                 <p className="mt-4 text-gray-950">© 2024 Adelina Interiors. All rights reserved.</p>
             </footer>
