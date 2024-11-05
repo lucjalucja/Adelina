@@ -9,7 +9,6 @@
   --overlay: rgba(0, 0, 0, 0.09); /* Soft semi-transparent overlay for hero section */
 }
 
-
 @media (prefers-color-scheme: no-preference) {
   :root {
     --background: #f8f8f8;
@@ -18,25 +17,21 @@
     --overlay: rgba(255, 255, 255, 0.15); /* Lighter overlay in dark mode */
   }
 }
-/* src/styles/globals.css */
-
-/* src/styles/globals.css */
-
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Helvetica, serif;
   font-weight: lighter;
+  margin: 0; /* Reset margin for body */
 }
-
 
 /* Header Styling */
 header {
   background-color: var(--background);
   border-bottom: 1px solid var(--accent);
 }
-/* Custom drop shadow similar to Figma's default */
+
 .header-shadow {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9);
 }
@@ -44,11 +39,11 @@ header {
 header nav a {
   color: var(--foreground);
   transition: color 0.3s ease;
-  padding: 0 2.5rem; /* Adjust this value for more/less space */
+  padding: 0 2rem; /* Adjust this value for more/less space */
 }
 
 header nav a:hover {
-  color: var(--foreground); /* Consistent color with no dark accent */
+  color: var(--foreground);
 }
 
 /* Hero Section Styling */
@@ -65,7 +60,7 @@ section.relative::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--overlay); /* Softer overlay for the hero image */
+  background: var(--overlay);
   z-index: 1;
 }
 
@@ -75,14 +70,14 @@ section.relative > div.absolute {
   color: white;
 }
 
-section.relative h1 {
-
+/* Project Gallery Styling */
+section#projects {
+  padding: 2rem 0; /* Add padding for breathing space */
 }
 
-/* Project Gallery Styling */
 section#projects .grid > div {
   background-color: var(--background);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Softer shadow for a light effect */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s ease;
@@ -92,22 +87,52 @@ section#projects .grid > div:hover {
   transform: scale(1.02);
 }
 
-
 section#projects h2 {
   font-size: 1rem;
   font-weight: 600;
   margin-top: 0.5rem;
   color: var(--foreground);
 }
+section#offer h2 {
+  font-weight: 100;
+  margin-top: 0.5rem;
+  color: var(--foreground);
+}
+
+section#offer p {
+  font-size: 0.875rem;
+  color: #777777;
+}
+
+section#offer h3 {
+  font-weight: 100;
+  color:  var(--foreground);
+}
 
 section#projects p {
   font-size: 0.875rem;
-  color: #777777; /* Softer gray for project description */
+  color: #777777;
+}
+
+/* Specific adjustments for smaller screens */
+@media (max-width: 768px) {
+  section#projects h2, section#projects p {
+    font-size: 0.8rem; /* Smaller font size for mobile */
+  }
+
+  section.relative h1 {
+    font-size: 1.5rem; /* Smaller hero title */
+  }
+
+  header nav a {
+    padding: 0 1rem; /* Reduced padding for mobile */
+  }
 }
 
 section#about p {
   color: #777777; /* Softer gray for project description */
 }
+
 section#contact p {
   color: #777777; /* Softer gray for project description */
 }
@@ -125,24 +150,7 @@ footer p {
   color: var(--foreground);
 }
 
-/* Custom Styles for LightSlider Arrows */
-/* Carousel.module.css */
-/* globals.css */
-
-/* globals.css */
-
-.carousel-container {
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.slide {
-  display: flex;
-  transition: transform 0.6s ease; /* Smooth sliding transition */
-}
-
+/* Carousel Arrows Custom Styles */
 .carousel-arrow {
   position: absolute;
   top: 50%;
