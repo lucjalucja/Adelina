@@ -230,7 +230,7 @@ export default function Home() {
                     <div>
                         <h2 className="text-3xl font-extralight mb-4">O mnie</h2>
                         <p className="text-lg">
-                            Tworzę wnętrza łączące styl i funkcjonalność, dostosowane do Twoich potrzeb. Specjalizuję się w projektach mieszkań, domów i przestrzeni komercyjnych, zapewniając pełną dokumentację techniczną i kosztorysy. Inspiruję się najnowszymi trendami, ale priorytetem są funkcjonalność i Twoje oczekiwania.
+                            Tworzę wnętrza łączące styl i funkcjonalność, dostosowane do Twoich potrzeb. Specjalizuję się w projektach mieszkań, domów i przestrzeni komercyjnych, zapewniając pełną dokumentację techniczną i kosztorysy. Inspiruję się najnowszymi trendami, ale priorytetem są Twoje oczekiwania.
                         </p>
                     </div>
                 </div>
@@ -243,7 +243,7 @@ export default function Home() {
                 <div className="text-lg mb-4">
                     <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-blue-500 hover:underline">adelina.drabot@gmail.com</a></p>
                     <p>Telefon: <a href="tel:+48600436570" className="text-blue-500 hover:underline">+48 600 436 570</a></p>
-                    <p>Instagram: <a href="https://www.instagram.com/adelinainteriors/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">@adelinainteriors</a></p>
+                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">@adelina.interiors</a></p>
                 </div>
             </section>
 
