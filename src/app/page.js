@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 
+
 export default function Home() {
     const projects = [
         { src: "/project1.png", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita zmiana wnętrza" },
@@ -25,6 +26,7 @@ export default function Home() {
             setItemsPerView(window.innerWidth <= 768 ? 1 : 3);
         };
 
+
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -37,8 +39,8 @@ export default function Home() {
     const onTouchMove = (e) => (handleTouchMove.current = e.touches[0].clientX);
     const onTouchEnd = () => {
         const diff = handleTouchStart.current - handleTouchMove.current;
-        if (diff > 50) goToNextSlide();
-        else if (diff < -50) goToPrevSlide();
+        if (diff > 80) goToNextSlide(); // Increased swipe threshold
+        else if (diff < -80) goToPrevSlide();
     };
 
     const goToNextSlide = () => {

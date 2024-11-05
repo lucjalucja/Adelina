@@ -9,65 +9,44 @@
   --overlay: rgba(0, 0, 0, 0.09); /* Soft semi-transparent overlay for hero section */
 }
 
-@media (prefers-color-scheme: no-preference) {
-  :root {
-    --background: #f8f8f8;
-    --foreground: #ededed;
-    --accent: #dcdcdc;
-    --overlay: rgba(255, 255, 255, 0.15); /* Lighter overlay in dark mode */
-  }
-}
-
-/* Mobile Header Adjustments */
-@media (max-width: 768px) {
-  header nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  header nav a {
-    padding: 0.5rem 0;
-  }
-
-  .carousel-arrow {
-    font-size: 1rem;
-    padding: 0.5rem;
-  }
-}
-
-/* Hero Section - Mobile */
 @media (max-width: 768px) {
   section.relative {
-    height: 60vh; /* Reduced height for mobile */
-    text-align: center;
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   section.relative h1 {
-    font-size: 2rem; /* Smaller hero title */
+    font-size: 1.8rem;
+    margin-top: 0.5rem; /* Minor spacing adjustment */
+  }
+
+  .hero-logo {
+    width: 80px; /* Adjust logo size for better fit on mobile */
   }
 }
 
-/* Carousel Container - Mobile Adjustments */
-@media (max-width: 768px) {
-  #projects .grid > div {
-    min-width: 100%; /* Show only one project at a time */
-    margin: 0;
-    transform: none; /* Disable scaling on hover */
-  }
+.carousel-arrow {
+  position: relative; /* Position change on mobile */
+  transition: opacity 0.2s;
+}
 
-  #projects .carousel-arrow {
-    font-size: 1rem;
-    padding: 0.3rem;
+@media (max-width: 768px) {
+  .carousel-arrow {
+    position: absolute;
+    opacity: 0.7;
   }
 }
 
-/* Footer - Mobile */
 @media (max-width: 768px) {
-  footer p {
-    font-size: 0.8rem;
-    padding: 1rem;
+  header nav a {
+    padding: 0.3rem 0.5rem; /* Further reduce padding */
+  }
+
+  section#projects h2, section#projects p {
+    font-size: 0.75rem; /* Slightly smaller font for compactness */
+  }
+
+  .carousel-arrow {
+    padding: 0.2rem 0.3rem; /* Smaller arrow size */
   }
 }
 
