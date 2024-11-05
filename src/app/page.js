@@ -12,12 +12,13 @@ export default function Home() {
         { src: "/project4.png", title: "Sypialnia 18 m²", description: "Sypialnia z detalami Hampton" },
     ];
 
+    // Media query to check if the screen is mobile size
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const [itemsPerView, setItemsPerView] = useState(isMobile ? 1 : 3);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Hamburger menu state
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control sidebar visibility
     const carouselRef = useRef(null);
 
     // Update items per view on screen resize
@@ -25,53 +26,45 @@ export default function Home() {
         const handleResize = () => {
             setItemsPerView(window.innerWidth <= 768 ? 1 : 3);
         };
-
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Swiping functionality for touch devices
-    const handleTouchStart = useRef(0);
-    const handleTouchMove = useRef(0);
-
-    const onTouchStart = (e) => (handleTouchStart.current = e.touches[0].clientX);
-    const onTouchMove = (e) => (handleTouchMove.current = e.touches[0].clientX);
-    const onTouchEnd = () => {
-        const diff = handleTouchStart.current - handleTouchMove.current;
-        if (diff > 50) goToNextSlide();
-        else if (diff < -50) goToPrevSlide();
-    };
-
+    // Function to navigate carousel to the next slide
     const goToNextSlide = () => {
         if (currentIndex < projects.length - itemsPerView) {
             setCurrentIndex((prevIndex) => prevIndex + 1);
         }
     };
 
+    // Function to navigate carousel to the previous slide
     const goToPrevSlide = () => {
         if (currentIndex > 0) {
             setCurrentIndex((prevIndex) => prevIndex - 1);
         }
     };
 
+    // Function to open the modal with a selected image
     const openModal = (index) => {
         setActiveImageIndex(index);
         setIsModalOpen(true);
     };
 
+    // Function to close the modal
     const closeModal = useCallback(() => {
         setIsModalOpen(false);
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col">
-            {/* Header */}
+        <div className="min-h-screen flex flex-col relative">
+
+            {/* Header with Sidebar Menu */}
             <header className="flex justify-between items-center p-4 header-shadow">
                 <div className="p-1">
-                    <Image src="/logo.png" alt="Logo" width={30} height={30} />
+                    <Image src="/logo.png" alt="Logo" width={30} height={30}/>
                 </div>
 
-                {/* Hamburger Menu Button for Mobile */}
+                {/* Sidebar Toggle Button */}
                 <button
                     className="md:hidden text-2xl"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -79,12 +72,23 @@ export default function Home() {
                     ☰
                 </button>
 
-                {/* Navigation Links */}
-                <nav
-                    className={`${
-                        isMenuOpen ? "block" : "hidden"
-                    } md:flex flex-col md:flex-row md:items-center text-black text-sm font-medium space-y-4 md:space-y-0 md:space-x-6`}
-                >
+                {/* Sidebar Menu */}
+                <div
+                    className={`fixed inset-0 bg-black bg-opacity-75 z-50 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:hidden`}>
+                    <div className="flex flex-col items-center justify-center h-full space-y-6 text-white text-lg">
+                        <button className="text-2xl absolute top-4 right-4" onClick={() => setIsMenuOpen(false)}>×
+                        </button>
+                        <a href="#projects" className="hover:text-gray-300"
+                           onClick={() => setIsMenuOpen(false)}>Projekty</a>
+                        <a href="#about" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>O mnie</a>
+                        <a href="#offer" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Oferta</a>
+                        <a href="#contact" className="hover:text-gray-300"
+                           onClick={() => setIsMenuOpen(false)}>Kontakt</a>
+                    </div>
+                </div>
+
+                {/* Desktop Navigation */}
+                <nav className="hidden md:flex md:items-center text-black text-sm font-medium space-x-6">
                     <a href="#projects" className="hover:text-gray-900">Projekty</a>
                     <a href="#about" className="hover:text-gray-900">O mnie</a>
                     <a href="#offer" className="hover:text-gray-900">Oferta</a>
@@ -94,26 +98,17 @@ export default function Home() {
 
             {/* Hero Section */}
             <section className="relative h-[60vh] flex items-center justify-center bg-gray-100">
-                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100" />
+                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
-                    <Image src="/logo_light.png" alt="Logo" width={105} height={116} />
+                    <Image src="/logo_light.png" alt="Logo" width={105} height={116}/>
                     <h1 className="text-5xl font-thin tracking-wider mt-4">ADELINA INTERIORS</h1>
                 </div>
             </section>
 
-            {/* Project Gallery Carousel */}
-            <section
-                id="projects"
-                className="py-16 px-4 flex flex-col items-center bg-gray-100"
-                onTouchStart={onTouchStart}
-                onTouchMove={onTouchMove}
-                onTouchEnd={onTouchEnd}
-            >
-                <div
-                    ref={carouselRef}
-                    className="relative max-w-screen-xl bg-white shadow-lg overflow-hidden p-4"
-                >
+            {/* Project Gallery Carousel with Arrows for Mobile */}
+            <section id="projects" className="py-16 px-4 flex flex-col items-center bg-gray-100">
+                <div ref={carouselRef} className="relative max-w-screen-xl bg-white shadow-lg overflow-hidden p-4">
                     <div
                         className="flex transition-transform duration-300"
                         style={{
@@ -139,18 +134,16 @@ export default function Home() {
                                     />
                                 </div>
                                 <h2 className="text-lg font-semibold mt-2 text-left">{project.title}</h2>
-                                <p className="text-sm text-gray-500 text-left overflow-hidden" style={{ WebkitLineClamp: 2 }}>
+                                <p className="text-sm text-gray-500 text-left overflow-hidden"
+                                   style={{WebkitLineClamp: 2}}>
                                     {project.description}
                                 </p>
                             </div>
                         ))}
                     </div>
-                </div>
 
-                {/* Arrows Positioned Below the Carousel */}
-                {!isMobile && (
-                    <div className="flex justify-between w-full max-w-screen-xl mt-4 px-4">
-                        {/* Left Arrow */}
+                    {/* Carousel Arrows - Now Visible on Both Mobile and Desktop */}
+                    <div className="flex justify-between w-full mt-4 px-4">
                         <button
                             onClick={goToPrevSlide}
                             className={`text-4xl ${
@@ -161,7 +154,6 @@ export default function Home() {
                             ←
                         </button>
 
-                        {/* Right Arrow */}
                         <button
                             onClick={goToNextSlide}
                             className={`text-4xl ${
@@ -172,9 +164,10 @@ export default function Home() {
                             →
                         </button>
                     </div>
-                )}
-
+                </div>
             </section>
+
+
 
             {/* Fullscreen Modal for Project Images */}
             {isModalOpen && (
@@ -210,12 +203,14 @@ export default function Home() {
                 </div>
             )}
 
+
             {/* Offer Section */}
             <section id="offer" className="py-16 px-6 pb-40">
                 <div className="max-w-screen-lg mx-auto">
                     <h2 className="text-3xl font-semibold mb-8 text-left">Oferta</h2>
                     <p className="text-lg mb-10 text-left">
-                        Kompleksowy projekt wnętrz obejmuje pełen zakres usług, od wstępnych pomiarów po finalne dokumentacje techniczne, zapewniając estetyczne i funkcjonalne przestrzenie.
+                        Kompleksowy projekt wnętrz obejmuje pełen zakres usług, od wstępnych pomiarów po finalne
+                        dokumentacje techniczne, zapewniając estetyczne i funkcjonalne przestrzenie.
                     </p>
                     <div className="grid gap-12 md:gap-8 md:grid-cols-2">
                         {/* Example for one step */}
@@ -224,7 +219,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Inwentaryzacja</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Precyzyjne pomiary przestrzeni, stanowiące solidną podstawę do tworzenia dokładnych i realistycznych projektów.
+                                    Precyzyjne pomiary przestrzeni, stanowiące solidną podstawę do tworzenia dokładnych
+                                    i realistycznych projektów.
                                 </p>
                             </div>
                         </div>
@@ -234,7 +230,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Projekt Koncepcyjny</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Układ pomieszczeń z propozycjami ścian działowych, mebli i sanitariatów, a następnie opracowujemy ostateczną koncepcję.
+                                    Układ pomieszczeń z propozycjami ścian działowych, mebli i sanitariatów, a następnie
+                                    opracowujemy ostateczną koncepcję.
                                 </p>
                             </div>
                         </div>
@@ -245,7 +242,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Wizualizacje</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Fotorealistyczne wizualizacje wnętrz, oddające zaprojektowane elementy i umożliwiające zobaczenie przyszłego efektu.
+                                    Fotorealistyczne wizualizacje wnętrz, oddające zaprojektowane elementy i
+                                    umożliwiające zobaczenie przyszłego efektu.
                                 </p>
                             </div>
                         </div>
@@ -256,7 +254,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Wykaz materiałów i mebli</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Zestawienie materiałów i wyposażenia z nazwami, adresami sklepów i ilościami, co ułatwia proces zakupu i pozwala kontrolować koszty.
+                                    Zestawienie materiałów i wyposażenia z nazwami, adresami sklepów i ilościami, co
+                                    ułatwia proces zakupu i pozwala kontrolować koszty.
                                 </p>
                             </div>
                         </div>
@@ -267,7 +266,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Przygotowywanie zamówień</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Pomoc w zamówieniach u sprawdzonych dostawców, zapewniając pełne wsparcie i kontakt w celu ułatwienia zakupów.
+                                    Pomoc w zamówieniach u sprawdzonych dostawców, zapewniając pełne wsparcie i kontakt
+                                    w celu ułatwienia zakupów.
                                 </p>
                             </div>
                         </div>
@@ -278,7 +278,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Dokumentacja techniczna</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Kompleksowa dokumentacja projektowa, zawierająca szczegółowe rysunki techniczne dla wykonawców, zgodne z wizją klienta.
+                                    Kompleksowa dokumentacja projektowa, zawierająca szczegółowe rysunki techniczne dla
+                                    wykonawców, zgodne z wizją klienta.
                                 </p>
                             </div>
                         </div>
@@ -289,7 +290,8 @@ export default function Home() {
                             <div>
                                 <h3 className="text-xl font-semibold">Wycena prac wykończeniowych</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Na życzenie klienta oferuję wycenę prac wykończeniowych u zaufanych ekip budowlanych, zapewniając najwyższą jakość realizacji.
+                                    Na życzenie klienta oferuję wycenę prac wykończeniowych u zaufanych ekip
+                                    budowlanych, zapewniając najwyższą jakość realizacji.
                                 </p>
                             </div>
                         </div>
@@ -301,13 +303,15 @@ export default function Home() {
             {/* About Section */}
             <section id="about" className="py-0 bg-white flex flex-col md:flex-row">
                 <div className="md:w-1/3 h-80 relative overflow-hidden">
-                    <Image src="/profile.jpg" alt="Adelina" layout="fill" objectFit="cover" className="rounded-l-lg" />
+                    <Image src="/profile.jpg" alt="Adelina" layout="fill" objectFit="cover" className="rounded-l-lg"/>
                 </div>
                 <div className="md:w-1/2 flex items-center justify-center p-6">
                     <div>
                         <h2 className="text-3xl font-extralight mb-4">O mnie</h2>
                         <p className="text-lg">
-                            Tworzę wnętrza łączące styl i funkcjonalność, dostosowane do Twoich potrzeb. Specjalizuję się w projektach mieszkań, domów i przestrzeni komercyjnych, zapewniając pełną dokumentację techniczną i kosztorysy.
+                            Tworzę wnętrza łączące styl i funkcjonalność, dostosowane do Twoich potrzeb. Specjalizuję
+                            się w projektach mieszkań, domów i przestrzeni komercyjnych, zapewniając pełną dokumentację
+                            techniczną i kosztorysy.
                         </p>
                     </div>
                 </div>
@@ -318,16 +322,20 @@ export default function Home() {
                 <h2 className="text-3xl font-extralight mb-4">Kontakt</h2>
                 <p className="text-lg mb-4">Umów się na bezpłatną konsultację :)</p>
                 <div className="text-lg mb-4 text-center">
-                    <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-blue-500 hover:underline">adelina.drabot@gmail.com</a></p>
-                    <p>Telefon: <a href="tel:+48504381057" className="text-blue-500 hover:underline">+48 504 381 057</a></p>
-                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">@adelina.interiors</a></p>
+                    <p>Email: <a href="mailto:adelina.drabot@gmail.com"
+                                 className="text-blue-500 hover:underline">adelina.drabot@gmail.com</a></p>
+                    <p>Telefon: <a href="tel:+48504381057" className="text-blue-500 hover:underline">+48 504 381 057</a>
+                    </p>
+                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank"
+                                     rel="noopener noreferrer"
+                                     className="text-blue-500 hover:underline">@adelina.interiors</a></p>
                 </div>
             </section>
 
             {/* Footer */}
             <footer className="py-8 flex flex-col items-center text-gray-950 text-sm">
                 <div>
-                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30} />
+                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
                 </div>
                 <p className="mt-4 text-gray-950">© 2024 Adelina Interiors. All rights reserved.</p>
             </footer>
@@ -335,10 +343,18 @@ export default function Home() {
             {/* CSS for bounce animation */}
             <style jsx>{`
                 @keyframes bounce-carousel {
-                    0% { transform: translateX(0); }
-                    30% { transform: translateX(-15px); }
-                    60% { transform: translateX(10px); }
-                    100% { transform: translateX(0); }
+                    0% {
+                        transform: translateX(0);
+                    }
+                    30% {
+                        transform: translateX(-15px);
+                    }
+                    60% {
+                        transform: translateX(10px);
+                    }
+                    100% {
+                        transform: translateX(0);
+                    }
                 }
 
                 .animate-bounce-carousel {

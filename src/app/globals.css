@@ -12,6 +12,21 @@
 * {
   box-sizing: border-box;
 }
+/* Sidebar Styles for Mobile */
+@media (max-width: 768px) {
+  /* Hide the desktop navigation by default */
+  .sidebar-open {
+    transform: translateX(0); /* Slide in */
+  }
+
+  /* Carousel arrow styles */
+  .carousel-arrow {
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8); /* Light background for contrast */
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+}
 
 html, body {
   overflow-x: hidden;
