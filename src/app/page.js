@@ -12,13 +12,12 @@ export default function Home() {
         { src: "/project4.png", title: "Sypialnia 18 m²", description: "Sypialnia z detalami Hampton" },
     ];
 
-    // Media query to check if the screen is mobile size
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const [itemsPerView, setItemsPerView] = useState(isMobile ? 1 : 3);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control sidebar visibility
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control overlay menu
     const carouselRef = useRef(null);
 
     // Update items per view on screen resize
@@ -30,27 +29,23 @@ export default function Home() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Function to navigate carousel to the next slide
     const goToNextSlide = () => {
         if (currentIndex < projects.length - itemsPerView) {
             setCurrentIndex((prevIndex) => prevIndex + 1);
         }
     };
 
-    // Function to navigate carousel to the previous slide
     const goToPrevSlide = () => {
         if (currentIndex > 0) {
             setCurrentIndex((prevIndex) => prevIndex - 1);
         }
     };
 
-    // Function to open the modal with a selected image
     const openModal = (index) => {
         setActiveImageIndex(index);
         setIsModalOpen(true);
     };
 
-    // Function to close the modal
     const closeModal = useCallback(() => {
         setIsModalOpen(false);
     }, []);
@@ -58,13 +53,13 @@ export default function Home() {
     return (
         <div className="min-h-screen flex flex-col relative">
 
-            {/* Header with Sidebar Menu */}
+            {/* Header with Overlay Menu */}
             <header className="flex justify-between items-center p-4 header-shadow">
                 <div className="p-1">
-                    <Image src="/logo.png" alt="Logo" width={30} height={30}/>
+                    <Image src="/logo.png" alt="Logo" width={30} height={30} />
                 </div>
 
-                {/* Sidebar Toggle Button */}
+                {/* Toggle Button for Overlay Menu */}
                 <button
                     className="md:hidden text-2xl"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -72,20 +67,16 @@ export default function Home() {
                     ☰
                 </button>
 
-                {/* Sidebar Menu */}
-                <div
-                    className={`fixed inset-0 bg-black bg-opacity-75 z-50 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:hidden`}>
-                    <div className="flex flex-col items-center justify-center h-full space-y-6 text-white text-lg">
-                        <button className="text-2xl absolute top-4 right-4" onClick={() => setIsMenuOpen(false)}>×
-                        </button>
-                        <a href="#projects" className="hover:text-gray-300"
-                           onClick={() => setIsMenuOpen(false)}>Projekty</a>
+                {/* Overlay Menu */}
+                {isMenuOpen && (
+                    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-6">
+                        <button className="text-3xl absolute top-6 right-6" onClick={() => setIsMenuOpen(false)}>×</button>
+                        <a href="#projects" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Projekty</a>
                         <a href="#about" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>O mnie</a>
                         <a href="#offer" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Oferta</a>
-                        <a href="#contact" className="hover:text-gray-300"
-                           onClick={() => setIsMenuOpen(false)}>Kontakt</a>
+                        <a href="#contact" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Kontakt</a>
                     </div>
-                </div>
+                )}
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-black text-sm font-medium space-x-6">
@@ -98,15 +89,15 @@ export default function Home() {
 
             {/* Hero Section */}
             <section className="relative h-[60vh] flex items-center justify-center bg-gray-100">
-                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
+                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100" />
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
-                    <Image src="/logo_light.png" alt="Logo" width={105} height={116}/>
+                    <Image src="/logo_light.png" alt="Logo" width={105} height={116} />
                     <h1 className="text-5xl font-thin tracking-wider mt-4">ADELINA INTERIORS</h1>
                 </div>
             </section>
 
-            {/* Project Gallery Carousel with Arrows for Mobile */}
+            {/* Project Gallery Carousel with Improved Arrow Positioning */}
             <section id="projects" className="py-16 px-4 flex flex-col items-center bg-gray-100">
                 <div ref={carouselRef} className="relative max-w-screen-xl bg-white shadow-lg overflow-hidden p-4">
                     <div
@@ -134,36 +125,33 @@ export default function Home() {
                                     />
                                 </div>
                                 <h2 className="text-lg font-semibold mt-2 text-left">{project.title}</h2>
-                                <p className="text-sm text-gray-500 text-left overflow-hidden"
-                                   style={{WebkitLineClamp: 2}}>
+                                <p className="text-sm text-gray-500 text-left overflow-hidden" style={{ WebkitLineClamp: 2 }}>
                                     {project.description}
                                 </p>
                             </div>
                         ))}
                     </div>
 
-                    {/* Carousel Arrows - Now Visible on Both Mobile and Desktop */}
-                    <div className="flex justify-between w-full mt-4 px-4">
-                        <button
-                            onClick={goToPrevSlide}
-                            className={`text-4xl ${
-                                currentIndex > 0 ? "text-gray-700" : "text-gray-300 cursor-default"
-                            }`}
-                            disabled={currentIndex === 0}
-                        >
-                            ←
-                        </button>
+                    {/* Carousel Arrows - Positioned Over Carousel */}
+                    <button
+                        onClick={goToPrevSlide}
+                        className={`absolute top-1/2 left-2 transform -translate-y-1/2 text-3xl p-2 ${
+                            currentIndex > 0 ? "text-gray-700" : "text-gray-300 cursor-default"
+                        }`}
+                        disabled={currentIndex === 0}
+                    >
+                        ←
+                    </button>
 
-                        <button
-                            onClick={goToNextSlide}
-                            className={`text-4xl ${
-                                currentIndex < projects.length - itemsPerView ? "text-gray-700" : "text-gray-300 cursor-default"
-                            }`}
-                            disabled={currentIndex >= projects.length - itemsPerView}
-                        >
-                            →
-                        </button>
-                    </div>
+                    <button
+                        onClick={goToNextSlide}
+                        className={`absolute top-1/2 right-2 transform -translate-y-1/2 text-3xl p-2 ${
+                            currentIndex < projects.length - itemsPerView ? "text-gray-700" : "text-gray-300 cursor-default"
+                        }`}
+                        disabled={currentIndex >= projects.length - itemsPerView}
+                    >
+                        →
+                    </button>
                 </div>
             </section>
 
