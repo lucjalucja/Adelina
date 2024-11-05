@@ -104,7 +104,7 @@ export default function Home() {
             {/* Header */}
             <header className="flex justify-between items-center p-4 header-shadow">
                 <div className="p-1">
-                    <Image src="/logo.svg" alt="Logo" width={30} height={30}/>
+                    <Image src="/logo.png" alt="Logo" width={30} height={30}/>
                 </div>
                 <nav className="flex-1 flex justify-center text-black text-sm font-medium space-x-6">
                     <a href="#projects" className="hover:text-gray-900">Projekty</a>
@@ -118,7 +118,7 @@ export default function Home() {
                 <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
-                    <Image src="/logo_light.svg" alt="Logo" width={105} height={116}/>
+                    <Image src="/logo_light.png" alt="Logo" width={105} height={116}/>
                     <h1 className="text-5xl font-thin tracking-wider mt-4">ADELINA INTERIORS</h1>
                 </div>
             </section>
@@ -250,7 +250,7 @@ export default function Home() {
             {/* Footer */}
             <footer className="py-8 flex flex-col items-center text-gray-950 text-sm">
                 <div>
-                    <Image src="/logo.svg" alt="Footer Logo" width={30} height={30}/>
+                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
                 </div>
                 <p className="mt-4 text-gray-950">© 2024 Adelina Interiors. All rights reserved.</p>
             </footer>
