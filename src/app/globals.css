@@ -18,6 +18,60 @@
   }
 }
 
+/* Mobile Header Adjustments */
+@media (max-width: 768px) {
+  header nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  header nav a {
+    padding: 0.5rem 0;
+  }
+
+  .carousel-arrow {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Hero Section - Mobile */
+@media (max-width: 768px) {
+  section.relative {
+    height: 60vh; /* Reduced height for mobile */
+    text-align: center;
+    padding: 1rem;
+  }
+
+  section.relative h1 {
+    font-size: 2rem; /* Smaller hero title */
+  }
+}
+
+/* Carousel Container - Mobile Adjustments */
+@media (max-width: 768px) {
+  #projects .grid > div {
+    min-width: 100%; /* Show only one project at a time */
+    margin: 0;
+    transform: none; /* Disable scaling on hover */
+  }
+
+  #projects .carousel-arrow {
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+}
+
+/* Footer - Mobile */
+@media (max-width: 768px) {
+  footer p {
+    font-size: 0.8rem;
+    padding: 1rem;
+  }
+}
+
+
 body {
   color: var(--foreground);
   background: var(--background);

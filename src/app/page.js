@@ -13,12 +13,21 @@ export default function Home() {
     ];
 
     const isMobile = useMediaQuery({ maxWidth: 768 });
-    const itemsPerView = isMobile ? 1 : 3; // Show one item on mobile, three on desktop
+    const [itemsPerView, setItemsPerView] = useState(isMobile ? 1 : 3);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [isBouncing, setIsBouncing] = useState(false);
     const carouselRef = useRef(null);
+
+    // Update items per view on screen resize
+    useEffect(() => {
+        const handleResize = () => {
+            setItemsPerView(window.innerWidth <= 768 ? 1 : 3);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // Swiping functionality for touch devices
     const handleTouchStart = useRef(0);
@@ -31,27 +40,6 @@ export default function Home() {
         if (diff > 50) goToNextSlide();
         else if (diff < -50) goToPrevSlide();
     };
-
-    // Intersection Observer to trigger bounce animation
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const entry = entries[0];
-                if (entry.isIntersecting) {
-                    setIsBouncing(true);
-                    observer.disconnect();
-                    setTimeout(() => setIsBouncing(false), 1000);
-                }
-            },
-            { threshold: 0.5 }
-        );
-
-        if (carouselRef.current) {
-            observer.observe(carouselRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
 
     const goToNextSlide = () => {
         if (currentIndex < projects.length - itemsPerView) {
@@ -73,29 +61,6 @@ export default function Home() {
     const closeModal = useCallback(() => {
         setIsModalOpen(false);
     }, []);
-
-    const nextImage = useCallback(() => {
-        setActiveImageIndex((prevIndex) => (prevIndex + 1) % projects.length);
-    }, [projects.length]);
-
-    const prevImage = useCallback(() => {
-        setActiveImageIndex((prevIndex) =>
-            prevIndex === 0 ? projects.length - 1 : prevIndex - 1
-        );
-    }, [projects.length]);
-
-    // Keyboard navigation and close modal with Esc
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (isModalOpen) {
-                if (event.key === "ArrowRight") nextImage();
-                if (event.key === "ArrowLeft") prevImage();
-                if (event.key === "Escape") closeModal();
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isModalOpen, nextImage, prevImage, closeModal]);
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -135,7 +100,7 @@ export default function Home() {
                     className="relative max-w-screen-xl bg-white shadow-lg overflow-hidden p-4"
                 >
                     <div
-                        className={`flex transition-transform duration-300 ${isBouncing ? "animate-bounce-carousel" : ""}`}
+                        className="flex transition-transform duration-300"
                         style={{
                             transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
                         }}
@@ -170,22 +135,30 @@ export default function Home() {
                 {/* Arrows Positioned Below the Carousel */}
                 {!isMobile && (
                     <div className="flex justify-between w-full max-w-screen-xl mt-4 px-4">
-                        {currentIndex > 0 ? (
-                            <button onClick={goToPrevSlide} className="text-gray-700 text-4xl">
-                                ←
-                            </button>
-                        ) : (
-                            <span className="text-gray-300 text-4xl">←</span>
-                        )}
-                        {currentIndex < projects.length - itemsPerView ? (
-                            <button onClick={goToNextSlide} className="text-gray-700 text-4xl">
-                                →
-                            </button>
-                        ) : (
-                            <span className="text-gray-300 text-4xl">→</span>
-                        )}
+                        {/* Left Arrow */}
+                        <button
+                            onClick={goToPrevSlide}
+                            className={`text-4xl ${
+                                currentIndex > 0 ? "text-gray-700" : "text-gray-300 cursor-default"
+                            }`}
+                            disabled={currentIndex === 0}
+                        >
+                            ←
+                        </button>
+
+                        {/* Right Arrow */}
+                        <button
+                            onClick={goToNextSlide}
+                            className={`text-4xl ${
+                                currentIndex < projects.length - itemsPerView ? "text-gray-700" : "text-gray-300 cursor-default"
+                            }`}
+                            disabled={currentIndex >= projects.length - itemsPerView}
+                        >
+                            →
+                        </button>
                     </div>
                 )}
+
             </section>
 
             {/* Fullscreen Modal for Project Images */}
@@ -207,20 +180,21 @@ export default function Home() {
                             height={900}
                         />
                         <button
-                            onClick={prevImage}
-                            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl"
-                        >
-                            ←
-                        </button>
-                        <button
-                            onClick={nextImage}
+                            onClick={() => setActiveImageIndex((prev) => (prev + 1) % projects.length)}
                             className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl"
                         >
                             →
                         </button>
+                        <button
+                            onClick={() => setActiveImageIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1))}
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl"
+                        >
+                            ←
+                        </button>
                     </div>
                 </div>
             )}
+
             {/* Offer Section */}
             <section id="offer" className="py-16 px-6 pb-40">
                 <div className="max-w-screen-lg mx-auto">
@@ -229,8 +203,7 @@ export default function Home() {
                         Kompleksowy projekt wnętrz obejmuje pełen zakres usług, od wstępnych pomiarów po finalne dokumentacje techniczne, zapewniając estetyczne i funkcjonalne przestrzenie.
                     </p>
                     <div className="grid gap-12 md:gap-8 md:grid-cols-2">
-
-                        {/* Step 1: Inwentaryzacja */}
+                        {/* Example for one step */}
                         <div className="flex items-start space-x-4">
                             <div className="text-2xl font-bold text-red-900">1</div>
                             <div>
@@ -240,7 +213,6 @@ export default function Home() {
                                 </p>
                             </div>
                         </div>
-
                         {/* Step 2: Projekt Koncepcyjny */}
                         <div className="flex items-start space-x-4">
                             <div className="text-2xl font-bold text-red-900">2</div>
@@ -311,23 +283,16 @@ export default function Home() {
                 </div>
             </section>
 
-
-            {/* O mnie Section */}
+            {/* About Section */}
             <section id="about" className="py-0 bg-white flex flex-col md:flex-row">
                 <div className="md:w-1/3 h-80 relative overflow-hidden">
-                    <Image
-                        src="/profile.jpg"
-                        alt="Adelina"
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-l-lg"
-                    />
+                    <Image src="/profile.jpg" alt="Adelina" layout="fill" objectFit="cover" className="rounded-l-lg" />
                 </div>
                 <div className="md:w-1/2 flex items-center justify-center p-6">
                     <div>
                         <h2 className="text-3xl font-extralight mb-4">O mnie</h2>
                         <p className="text-lg">
-                            Tworzę wnętrza łączące styl i funkcjonalność, dostosowane do Twoich potrzeb. Specjalizuję się w projektach mieszkań, domów i przestrzeni komercyjnych, zapewniając pełną dokumentację techniczną i kosztorysy. Inspiruję się najnowszymi trendami, ale priorytetem są Twoje oczekiwania.
+                            Tworzę wnętrza łączące styl i funkcjonalność, dostosowane do Twoich potrzeb. Specjalizuję się w projektach mieszkań, domów i przestrzeni komercyjnych, zapewniając pełną dokumentację techniczną i kosztorysy.
                         </p>
                     </div>
                 </div>
@@ -355,18 +320,10 @@ export default function Home() {
             {/* CSS for bounce animation */}
             <style jsx>{`
                 @keyframes bounce-carousel {
-                    0% {
-                        transform: translateX(0);
-                    }
-                    30% {
-                        transform: translateX(-15px);
-                    }
-                    60% {
-                        transform: translateX(10px);
-                    }
-                    100% {
-                        transform: translateX(0);
-                    }
+                    0% { transform: translateX(0); }
+                    30% { transform: translateX(-15px); }
+                    60% { transform: translateX(10px); }
+                    100% { transform: translateX(0); }
                 }
 
                 .animate-bounce-carousel {
