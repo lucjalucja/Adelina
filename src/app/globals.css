@@ -3,19 +3,168 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F3F3F3;
+  --foreground: #3C3B3B;
+  --accent: #ffffff; /* Soft gray for accents */
+  --overlay: rgba(0, 0, 0, 0.09); /* Soft semi-transparent overlay for hero section */
 }
 
-@media (prefers-color-scheme: dark) {
+
+@media (prefers-color-scheme: no-preference) {
   :root {
-    --background: #0a0a0a;
+    --background: #f8f8f8;
     --foreground: #ededed;
+    --accent: #dcdcdc;
+    --overlay: rgba(255, 255, 255, 0.15); /* Lighter overlay in dark mode */
   }
 }
+/* src/styles/globals.css */
+
+/* src/styles/globals.css */
+
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Helvetica, serif;
+  font-weight: lighter;
+}
+
+
+/* Header Styling */
+header {
+  background-color: var(--background);
+  border-bottom: 1px solid var(--accent);
+}
+/* Custom drop shadow similar to Figma's default */
+.header-shadow {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9);
+}
+
+header nav a {
+  color: var(--foreground);
+  transition: color 0.3s ease;
+  padding: 0 2.5rem; /* Adjust this value for more/less space */
+}
+
+header nav a:hover {
+  color: var(--foreground); /* Consistent color with no dark accent */
+}
+
+/* Hero Section Styling */
+section.relative {
+  position: relative;
+  height: 80vh; /* Adjusted height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+section.relative::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--overlay); /* Softer overlay for the hero image */
+  z-index: 1;
+}
+
+section.relative > div.absolute {
+  z-index: 2; /* Ensures the logo and text are above the overlay */
+  text-align: center;
+  color: white;
+}
+
+section.relative h1 {
+
+}
+
+/* Project Gallery Styling */
+section#projects .grid > div {
+  background-color: var(--background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Softer shadow for a light effect */
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+section#projects .grid > div:hover {
+  transform: scale(1.02);
+}
+
+
+section#projects h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  color: var(--foreground);
+}
+
+section#projects p {
+  font-size: 0.875rem;
+  color: #777777; /* Softer gray for project description */
+}
+
+section#about p {
+  color: #777777; /* Softer gray for project description */
+}
+section#contact p {
+  color: #777777; /* Softer gray for project description */
+}
+
+/* Footer Styling */
+footer {
+  background-color: var(--background);
+  padding: 2rem 0;
+  text-align: center;
+  color: #393939; /* Softer gray for footer text */
+}
+
+footer p {
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+/* Custom Styles for LightSlider Arrows */
+/* Carousel.module.css */
+/* globals.css */
+
+/* globals.css */
+
+.carousel-container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.slide {
+  display: flex;
+  transition: transform 0.6s ease; /* Smooth sliding transition */
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  color: #4a4a4a;
+  background-color: rgba(255, 255, 255, 0.8); /* Light background for visibility */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 10; /* Ensure it appears above other elements */
+}
+
+.carousel-arrow.left {
+  left: 1rem; /* Position on the left side */
+}
+
+.carousel-arrow.right {
+  right: 1rem; /* Position on the right side */
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(200, 200, 200, 0.5); /* Hover effect */
 }
