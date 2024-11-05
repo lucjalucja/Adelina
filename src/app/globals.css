@@ -8,6 +8,99 @@
   --accent: #ffffff; /* Soft gray for accents */
   --overlay: rgba(0, 0, 0, 0.09); /* Soft semi-transparent overlay for hero section */
 }
+/* Prevent Horizontal Scrolling on Mobile */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.container, .carousel-container, header, section, footer {
+  max-width: 100vw;
+}
+
+/* Padding and Margin Adjustments */
+@media (max-width: 768px) {
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .carousel-container, #projects .grid > div {
+    padding: 0 1rem;
+  }
+}
+
+/* Carousel Styling for Mobile */
+@media (max-width: 768px) {
+  .carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+
+  .carousel-item {
+    min-width: 100%;
+    scroll-snap-align: center;
+    flex: none;
+    padding: 1rem;
+  }
+
+  .carousel-arrow {
+    font-size: 1.2rem;
+    padding: 0.2rem;
+  }
+}
+
+/* Navigation Bar Adjustments for Compact Layout */
+@media (max-width: 768px) {
+  header nav {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  header nav a {
+    padding: 0 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide the desktop navigation */
+  header nav {
+    display: none; /* Initially hidden */
+  }
+
+  /* Show navigation when menu is open */
+  header nav.block {
+    display: flex; /* Shows the navigation as a vertical list */
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+}
+
+
+/* Additional Mobile-Specific Adjustments */
+@media (max-width: 768px) {
+  section.relative {
+    padding: 0.5rem;
+  }
+
+  section.relative h1 {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero-logo {
+    width: 80px;
+  }
+}
 
 @media (max-width: 768px) {
   section.relative {

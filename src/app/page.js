@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 
-
 export default function Home() {
     const projects = [
         { src: "/project1.png", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita zmiana wnętrza" },
@@ -18,6 +17,7 @@ export default function Home() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // Hamburger menu state
     const carouselRef = useRef(null);
 
     // Update items per view on screen resize
@@ -25,7 +25,6 @@ export default function Home() {
         const handleResize = () => {
             setItemsPerView(window.innerWidth <= 768 ? 1 : 3);
         };
-
 
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
@@ -39,8 +38,8 @@ export default function Home() {
     const onTouchMove = (e) => (handleTouchMove.current = e.touches[0].clientX);
     const onTouchEnd = () => {
         const diff = handleTouchStart.current - handleTouchMove.current;
-        if (diff > 80) goToNextSlide(); // Increased swipe threshold
-        else if (diff < -80) goToPrevSlide();
+        if (diff > 50) goToNextSlide();
+        else if (diff < -50) goToPrevSlide();
     };
 
     const goToNextSlide = () => {
@@ -71,7 +70,21 @@ export default function Home() {
                 <div className="p-1">
                     <Image src="/logo.png" alt="Logo" width={30} height={30} />
                 </div>
-                <nav className="flex-1 flex justify-center text-black text-sm font-medium space-x-6">
+
+                {/* Hamburger Menu Button for Mobile */}
+                <button
+                    className="md:hidden text-2xl"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                    ☰
+                </button>
+
+                {/* Navigation Links */}
+                <nav
+                    className={`${
+                        isMenuOpen ? "block" : "hidden"
+                    } md:flex flex-col md:flex-row md:items-center text-black text-sm font-medium space-y-4 md:space-y-0 md:space-x-6`}
+                >
                     <a href="#projects" className="hover:text-gray-900">Projekty</a>
                     <a href="#about" className="hover:text-gray-900">O mnie</a>
                     <a href="#offer" className="hover:text-gray-900">Oferta</a>
