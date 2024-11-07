@@ -89,6 +89,7 @@ html, body {
   header nav {
     display: flex;
     flex-wrap: nowrap;
+    padding: 0.5rem 1rem;
   }
 
   header nav a {
@@ -115,7 +116,7 @@ html, body {
 @media only screen and (max-width: 768px) {
   #hero {
     padding-top: 50px; /* Reduce padding-top for mobile */
-    height: 60vh;; /* Reduce height for mobile */
+    height: 70vh;; /* Reduce height for mobile */
   }
 }
 
@@ -171,8 +172,8 @@ body {
 
 /* Header Styling */
 header {
-  background-color: var(--accent);
-  border-bottom: 1px solid var(--background);
+  background-color: var(--background);
+  border-bottom: 1px solid var(--accent);
 }
 
 .header-shadow {
