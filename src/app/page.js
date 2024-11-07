@@ -1,7 +1,58 @@
+// pages/index.js
+
 "use client";
 
 import { useState, useCallback } from "react";
 import Image from "next/image";
+import Head from "next/head";
+
+export default function Home() {
+    // Define meta tags for social preview
+    const SEO = {
+        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz - Adelina Interiors",
+        description:
+            "Profesjonalne usługi architekta wnętrz w Gdańsku. Tworzę unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
+        url: "https://www.adelina-interiors.co",
+        image: "https://www.adelina-interiors.co/path-to-your-preview-image.jpg",
+    };
+
+    return (
+        <>
+            <Head>
+                {/* Primary Meta Tags */}
+                <title>{SEO.title}</title>
+                <meta name="description" content={SEO.description} />
+
+                {/* Open Graph / Facebook Meta Tags */}
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={SEO.url} />
+                <meta property="og:title" content={SEO.title} />
+                <meta property="og:description" content={SEO.description} />
+                <meta property="og:image" content={SEO.image} />
+                <meta property="og:site_name" content="Adelina Interiors" />
+                <meta property="og:locale" content="pl_PL" />
+
+            </Head>
+
+            {/* Page Content */}
+            <div className="min-h-screen flex flex-col relative">
+                <header className="flex justify-between items-center p-4 header-shadow">
+                    <div className="p-1">
+                        <Image src="/logo.png" alt="Logo" width={30} height={30} />
+                    </div>
+                </header>
+
+                {/* Main Content */}
+                <section className="py-16">
+                    <h1 className="text-5xl font-light text-center">ADELINA INTERIORS</h1>
+                    <p className="mt-4 text-lg text-center">Tworzę wnętrza, które łączą styl i funkcjonalność.</p>
+
+                </section>
+            </div>
+        </>
+    );
+}
+
 
 
 const SEO = {
@@ -34,6 +85,13 @@ export default function Home() {
         { src: "/project4.jpg", title: "Sypialnia 18 m²", description: "Sypialnia w jasnych barwach, kompleksowy projekt" },
     ];
 
+    // Smooth Scroll Handlers without URL change
+    const scrollToSection = (sectionId) => {
+        document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+        setIsMenuOpen(false); // Close menu on mobile
+    };
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,26 +122,27 @@ export default function Home() {
 
                 {/* Overlay Menu for Mobile */}
                 {isMenuOpen && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-6">
+                    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-6">
                         <button className="text-3xl absolute top-6 right-6" onClick={() => setIsMenuOpen(false)}>×
                         </button>
-                        <a href="#projects" className="hover:text-gray-300"
-                           onClick={() => setIsMenuOpen(false)}>Projekty</a>
-                        <a href="#about" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>O mnie</a>
-                        <a href="#offer" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Oferta</a>
-                        <a href="#contact" className="hover:text-gray-300"
-                           onClick={() => setIsMenuOpen(false)}>Kontakt</a>
+                        <button onClick={() => scrollToSection("projects")} className="hover:text-gray-300">Projekty
+                        </button>
+                        <button onClick={() => scrollToSection("about")} className="hover:text-gray-300">O mnie</button>
+                        <button onClick={() => scrollToSection("offer")} className="hover:text-gray-300">Oferta</button>
+                        <button onClick={() => scrollToSection("contact")} className="hover:text-gray-300">Kontakt
+                        </button>
                     </div>
                 )}
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-black text-sm font-medium space-x-6">
-                    <a href="#projects" className="hover:text-gray-900" title="Zobacz Projekty">Projekty</a>
-                    <a href="#about" className="hover:text-gray-900" title="Dowiedz się o mnie">O mnie</a>
-                    <a href="#offer" className="hover:text-gray-900" title="Oferta usług architekta wnętrz">Oferta</a>
-                    <a href="#contact" className="hover:text-gray-900" title="Skontaktuj się z architektem wnętrz">Kontakt</a>
+                    <button onClick={() => scrollToSection("projects")} className="hover:text-gray-900">Projekty
+                    </button>
+                    <button onClick={() => scrollToSection("about")} className="hover:text-gray-900">O mnie</button>
+                    <button onClick={() => scrollToSection("offer")} className="hover:text-gray-900">Oferta</button>
+                    <button onClick={() => scrollToSection("contact")} className="hover:text-gray-900">Kontakt</button>
                 </nav>
+
             </header>
 
             {/* Hero Section */}
