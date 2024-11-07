@@ -28,33 +28,23 @@ export const metadata = {
     title: "Adelina Interiors",
     description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Unikalne i dunkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
 
-    // Open Graph metadata (as before)
-    openGraph: {
-        type: "website",
-        locale: "pl_PL",
-        url: "https://www.adelina-interiors.co",
-        siteName: "Adelina Interiors",
-        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
-        description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Skontaktuj się, aby stworzyć swoje wymarzone wnętrze!",
-        images: [
-            {
-                url: "https://www.adelina-interiors.co/project1.jpeg", // Absolute URL for OG image
-                width: 1200,
-                height: 630,
-                alt: "Adelina Interiors Gdańsk - Projekt przykładowy",
-            },
-        ],
-    },
-    // Twitter metadata if needed
-    twitter: {
-        card: "summary_large_image",
-        site: "@adelina_interiors",
-        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz - Adelina Interiors",
-        description: "Profesjonalne usługi architekta wnętrz w Gdańsku.",
-        images: ["https://www.adelina-interiors.co/project1.jpeg"],
-    },
-};
-
+        openGraph: {
+            type: "website",
+            locale: "pl_PL",
+            url: "https://www.adelina-interiors.co",
+            siteName: "Adelina Interiors",
+            title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
+            description: "Kompleksowe usługi architektoniczne w Gdańsku.",
+            images: [
+                {
+                    url: "https://www.adelina-interiors.co/project1.jpeg", // Absolute URL for Open Graph image
+                    width: 1200,
+                    height: 630,
+                    alt: "Adelina Interiors Gdańsk - Projekt przykładowy",
+                },
+            ],
+        },
+    };
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
