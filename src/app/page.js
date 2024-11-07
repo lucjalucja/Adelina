@@ -4,6 +4,28 @@ import { useState, useCallback } from "react";
 import Image from "next/image";
 
 
+const SEO = {
+    title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
+    description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Tworzę unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
+    openGraph: {
+        type: "website",
+        locale: "pl_PL",
+        url: "https://www.adelina-interiors.co",
+        site_name: "Adelina Interiors",
+        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
+        description: "Kompleksowe usługi architektoniczne w Gdańsku. Skontaktuj się, aby stworzyć swoje wymarzone wnętrze!",
+        images: [
+            {
+                src: "project1.jpeg",
+                width: 1200,
+                height: 630,
+                alt: "Adelina Interiors Gdańsk - Projekt przykładowy",
+            },
+        ],
+    },
+};
+
+
 export default function Home() {
     const projects = [
         { src: "/project1.jpeg", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita rearanżacja wnętrza" },
@@ -57,15 +79,16 @@ export default function Home() {
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-black text-sm font-medium space-x-6">
-                    <a href="#projects" className="hover:text-gray-900">Projekty</a>
-                    <a href="#about" className="hover:text-gray-900">O mnie</a>
-                    <a href="#offer" className="hover:text-gray-900">Oferta</a>
-                    <a href="#contact" className="hover:text-gray-900">Kontakt</a>
+                    <a href="#projects" className="hover:text-gray-900" title="Zobacz Projekty">Projekty</a>
+                    <a href="#about" className="hover:text-gray-900" title="Dowiedz się o mnie">O mnie</a>
+                    <a href="#offer" className="hover:text-gray-900" title="Oferta usług architekta wnętrz">Oferta</a>
+                    <a href="#contact" className="hover:text-gray-900" title="Skontaktuj się z architektem wnętrz">Kontakt</a>
                 </nav>
             </header>
 
             {/* Hero Section */}
-            <section id= 'hero' className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100 mb-16">
+            <section id='hero'
+                     className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100 mb-16">
                 <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
