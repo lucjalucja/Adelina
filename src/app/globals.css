@@ -112,7 +112,12 @@ html, body {
     margin-top: 1rem;
   }
 }
-
+@media only screen and (max-width: 768px) {
+  #hero {
+    padding-top: 50px; /* Reduce padding-top for mobile */
+    height: 250px; /* Reduce height for mobile */
+  }
+}
 
 /* Additional Mobile-Specific Adjustments */
 @media (max-width: 768px) {
