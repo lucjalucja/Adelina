@@ -117,8 +117,7 @@ html, body {
 /* Additional Mobile-Specific Adjustments */
 @media (max-width: 768px) {
   section.relative {
-    padding: 0.1rem;
-
+    padding: 0.5rem;
   }
 
   section.relative h1 {
