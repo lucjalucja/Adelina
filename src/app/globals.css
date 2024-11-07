@@ -48,6 +48,19 @@ html, body {
     padding: 0 1rem;
   }
 }
+@media (max-width: 768px) {
+  .text-5xl {
+    font-size: 2.5rem; /* Adjust the title size for smaller screens */
+  }
+  .px-6 {
+    padding-left: 1rem; /* Slightly reduce padding for smaller screens */
+    padding-right: 1rem;
+  }
+  .py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+}
 
 /* Carousel Styling for Mobile */
 @media (max-width: 768px) {
@@ -213,13 +226,14 @@ section.relative > div.absolute {
 
 /* Project Gallery Styling */
 section#projects {
-  padding: 2rem 0; /* Add padding for breathing space */
+  padding: 2rem 0;
+  background-color: var(--background);
 }
 
 section#projects .grid > div {
-  background-color: var(--background);
+  background-color: var(--accent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
+  border-radius: 3px;
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -229,15 +243,29 @@ section#projects .grid > div:hover {
 }
 
 section#projects h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 0.5rem;
-  color: var(--foreground);
+
+    font-weight: 100;
+    margin-top: 0.5rem;
+    color: var(--foreground);
+
+}
+section#projects h3 {
+  font-weight: 100;
+  color:  var(--foreground);
+}
+section#projects p {
+  font-size: 0.875rem;
+  color: #777777;
 }
 section#offer h2 {
   font-weight: 100;
   margin-top: 0.5rem;
   color: var(--foreground);
+}
+
+section#offer {
+
+  color: var(--background);
 }
 
 section#offer p {
@@ -291,29 +319,18 @@ footer p {
   color: var(--foreground);
 }
 
-/* Carousel Arrows Custom Styles */
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0.5rem 1rem;
-  font-size: 1.5rem;
-  color: #4a4a4a;
-  background-color: rgba(255, 255, 255, 0.8); /* Light background for visibility */
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  z-index: 10; /* Ensure it appears above other elements */
+
+/* Smooth scaling effect on hover for project images */
+.group:hover .scale-110 {
+  transform: scale(1.1);
 }
 
-.carousel-arrow.left {
-  left: 1rem; /* Position on the left side */
-}
 
-.carousel-arrow.right {
-  right: 1rem; /* Position on the right side */
+/* Modal background and content styling */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.75);
 }
-
-.carousel-arrow:hover {
-  background-color: rgba(200, 200, 200, 0.5); /* Hover effect */
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 8px;
 }

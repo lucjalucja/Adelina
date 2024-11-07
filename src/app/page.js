@@ -1,45 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
+
 
 export default function Home() {
     const projects = [
-        { src: "/project1.png", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita zmiana wnętrza" },
+        { src: "/project1.jpeg", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita rearanżacja wnętrza" },
         { src: "/project2.png", title: "Salon 45m²", description: "Stan deweloperski, kompleksowy projekt całego domu" },
-        { src: "/project3.png", title: "Łazienka 5m²", description: "Łazienka na parterze dla gości, kompleksowy projekt" },
-        { src: "/project4.png", title: "Sypialnia 18 m²", description: "Sypialnia z detalami Hampton" },
+        { src: "/project3.jpg", title: "Łazienka 5m²", description: "Na parterze dla gości, kompleksowy projekt" },
+        { src: "/project4.jpg", title: "Sypialnia 18 m²", description: "Sypialnia w jasnych barwach, kompleksowy projekt" },
     ];
 
-    const isMobile = useMediaQuery({ maxWidth: 768 });
-    const [itemsPerView, setItemsPerView] = useState(isMobile ? 1 : 3);
-    const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control overlay menu
-    const carouselRef = useRef(null);
-
-    // Update items per view on screen resize
-    useEffect(() => {
-        const handleResize = () => {
-            setItemsPerView(window.innerWidth <= 768 ? 1 : 3);
-        };
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    const goToNextSlide = () => {
-        if (currentIndex < projects.length - itemsPerView) {
-            setCurrentIndex((prevIndex) => prevIndex + 1);
-        }
-    };
-
-    const goToPrevSlide = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex((prevIndex) => prevIndex - 1);
-        }
-    };
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const openModal = (index) => {
         setActiveImageIndex(index);
@@ -52,14 +27,12 @@ export default function Home() {
 
     return (
         <div className="min-h-screen flex flex-col relative">
-
-            {/* Header with Overlay Menu */}
+            {/* Header Section */}
             <header className="flex justify-between items-center p-4 header-shadow">
                 <div className="p-1">
-                    <Image src="/logo.png" alt="Logo" width={30} height={30} />
+                    <Image src="/logo.png" alt="Logo" width={30} height={30}/>
                 </div>
 
-                {/* Toggle Button for Overlay Menu */}
                 <button
                     className="md:hidden text-2xl"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -67,14 +40,18 @@ export default function Home() {
                     ☰
                 </button>
 
-                {/* Overlay Menu */}
+                {/* Overlay Menu for Mobile */}
                 {isMenuOpen && (
-                    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-6">
-                        <button className="text-3xl absolute top-6 right-6" onClick={() => setIsMenuOpen(false)}>×</button>
-                        <a href="#projects" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Projekty</a>
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-6">
+                        <button className="text-3xl absolute top-6 right-6" onClick={() => setIsMenuOpen(false)}>×
+                        </button>
+                        <a href="#projects" className="hover:text-gray-300"
+                           onClick={() => setIsMenuOpen(false)}>Projekty</a>
                         <a href="#about" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>O mnie</a>
                         <a href="#offer" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Oferta</a>
-                        <a href="#contact" className="hover:text-gray-300" onClick={() => setIsMenuOpen(false)}>Kontakt</a>
+                        <a href="#contact" className="hover:text-gray-300"
+                           onClick={() => setIsMenuOpen(false)}>Kontakt</a>
                     </div>
                 )}
 
@@ -88,120 +65,66 @@ export default function Home() {
             </header>
 
             {/* Hero Section */}
-            <section className="relative h-[60vh] flex items-center justify-center bg-gray-100">
-                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100" />
+            <section className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100 mb-16">
+                <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
-                    <Image src="/logo_light.png" alt="Logo" width={105} height={116} />
+                    <Image src="/logo_light.png" alt="Logo" width={105} height={116}/>
                     <h1 className="text-5xl font-thin tracking-wider mt-4">ADELINA INTERIORS</h1>
+                    <p className="mt-4 text-lg text-center">Podziel się swoją wizją – pomogę Ci ją zrealizować!</p>
+
+                    {/* Call-to-Action Button */}
+                    <a
+                        href="tel:+48504381057"
+                        className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-200"
+                    >
+                        Zadzwoń teraz: +48 504 381 057
+                    </a>
+
+                    {/* Optional Link to Kontakt Section */}
+                    <a
+                        href="#contact"
+                        className="mt-2 text-sm text-gray-200 hover:underline"
+                    >
+                        Lub sprawdź inne sposoby kontaktu
+                    </a>
                 </div>
             </section>
 
-            {/* Project Gallery Carousel with Improved Arrow Positioning */}
-            <section id="projects" className="py-16 px-4 flex flex-col items-center bg-gray-100">
-                <div ref={carouselRef} className="relative max-w-screen-xl bg-white shadow-lg overflow-hidden p-4">
-                    <div
-                        className="flex transition-transform duration-300"
-                        style={{
-                            transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
-                        }}
-                    >
-                        {projects.map((project, index) => (
-                            <div
-                                key={index}
-                                className="p-2 flex-shrink-0"
-                                style={{
-                                    minWidth: `calc(100% / ${itemsPerView})`,
-                                    minHeight: "400px"
-                                }}
-                                onClick={() => openModal(index)}
-                            >
-                                <div className="relative w-full h-[250px] overflow-hidden drop-shadow">
-                                    <Image
-                                        src={project.src}
-                                        alt={project.title}
-                                        layout="fill"
-                                        objectFit="cover"
-                                    />
-                                </div>
-                                <h2 className="text-lg font-semibold mt-2 text-left">{project.title}</h2>
-                                <p className="text-sm text-gray-500 text-left overflow-hidden" style={{ WebkitLineClamp: 2 }}>
-                                    {project.description}
-                                </p>
+
+            {/* Projects Section (Responsive Masonry Grid Layout) */}
+            <section id="projects" className="py-16 px-4">
+                <h2 className="text-3xl font-extralight mb-8 text-center">Zrealizowane projekty</h2>
+                <div className="px-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {projects.map((project, index) => (
+                        <div key={index} className="cursor-pointer group overflow-hidden"
+                             onClick={() => openModal(index)}>
+                            <div className="relative h-72 w-full">
+                                <Image
+                                    src={project.src}
+                                    alt={project.title}
+                                    layout="fill"
+                                    objectFit="cover"
+                                    className="transform transition-transform duration-300 group-hover:scale-105"
+                                />
                             </div>
-                        ))}
-                    </div>
-
-                    {/* Carousel Arrows - Positioned Over Carousel */}
-                    <button
-                        onClick={goToPrevSlide}
-                        className={`absolute top-1/2 left-2 transform -translate-y-1/2 text-3xl p-2 ${
-                            currentIndex > 0 ? "text-gray-700" : "text-gray-300 cursor-default"
-                        }`}
-                        disabled={currentIndex === 0}
-                    >
-                        ←
-                    </button>
-
-                    <button
-                        onClick={goToNextSlide}
-                        className={`absolute top-1/2 right-2 transform -translate-y-1/2 text-3xl p-2 ${
-                            currentIndex < projects.length - itemsPerView ? "text-gray-700" : "text-gray-300 cursor-default"
-                        }`}
-                        disabled={currentIndex >= projects.length - itemsPerView}
-                    >
-                        →
-                    </button>
+                            <h3 className="text-lg px-6 pt-4 pb-2 font-semibold mt-2">{project.title}</h3>
+                            <p className="text-sm px-6 pb-8 text-gray-500">{project.description}</p>
+                        </div>
+                    ))}
                 </div>
             </section>
 
-
-
-            {/* Fullscreen Modal for Project Images */}
-            {isModalOpen && (
-                <div
-                    className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
-                    onClick={closeModal}
-                >
-                    <div
-                        className="relative w-full max-w-4xl mx-4"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button className="absolute top-1 right-5 text-white text-4xl" onClick={closeModal}>×</button>
-                        <Image
-                            src={projects[activeImageIndex].src}
-                            alt="Enlarged Project Image"
-                            layout="responsive"
-                            width={1600}
-                            height={900}
-                        />
-                        <button
-                            onClick={() => setActiveImageIndex((prev) => (prev + 1) % projects.length)}
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl"
-                        >
-                            →
-                        </button>
-                        <button
-                            onClick={() => setActiveImageIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1))}
-                            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl"
-                        >
-                            ←
-                        </button>
-                    </div>
-                </div>
-            )}
-
-
-            {/* Offer Section */}
-            <section id="offer" className="py-16 px-6 pb-40">
+            <section id="offer" className="pt-16 pb-20 px-6">
                 <div className="max-w-screen-lg mx-auto">
-                    <h2 className="text-3xl font-semibold mb-8 text-left">Oferta</h2>
+                    <h2 className="text-3xl font-semibold mb-8 text-center">Oferta</h2>
                     <p className="text-lg mb-10 text-left">
                         Kompleksowy projekt wnętrz obejmuje pełen zakres usług, od wstępnych pomiarów po finalne
                         dokumentacje techniczne, zapewniając estetyczne i funkcjonalne przestrzenie.
                     </p>
                     <div className="grid gap-12 md:gap-8 md:grid-cols-2">
-                        {/* Example for one step */}
+
+                        {/* Step 1: Inwentaryzacja */}
                         <div className="flex items-start space-x-4">
                             <div className="text-2xl font-bold text-red-900">1</div>
                             <div>
@@ -212,14 +135,15 @@ export default function Home() {
                                 </p>
                             </div>
                         </div>
+
                         {/* Step 2: Projekt Koncepcyjny */}
                         <div className="flex items-start space-x-4">
                             <div className="text-2xl font-bold text-red-900">2</div>
                             <div>
                                 <h3 className="text-xl font-semibold">Projekt Koncepcyjny</h3>
                                 <p className="text-gray-700 mt-1">
-                                    Układ pomieszczeń z propozycjami ścian działowych, mebli i sanitariatów, a następnie
-                                    opracowujemy ostateczną koncepcję.
+                                    Przedstawiam układ pomieszczeń z propozycjami ścian działowych, mebli i
+                                    sanitariatów, a następnie opracowujemy ostateczną koncepcję.
                                 </p>
                             </div>
                         </div>
@@ -287,7 +211,6 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-
             {/* About Section */}
             <section id="about" className="py-0 bg-white flex flex-col md:flex-row">
                 <div className="md:w-1/3 h-80 relative overflow-hidden">
@@ -320,7 +243,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Footer */}
+            {/* Footer Section */}
             <footer className="py-8 flex flex-col items-center text-gray-950 text-sm">
                 <div>
                     <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
@@ -328,31 +251,31 @@ export default function Home() {
                 <p className="mt-4 text-gray-950">© 2024 Adelina Interiors. All rights reserved.</p>
             </footer>
 
-            {/* CSS for bounce animation */}
-            <style jsx>{`
-                @keyframes bounce-carousel {
-                    0% {
-                        transform: translateX(0);
-                    }
-                    30% {
-                        transform: translateX(-15px);
-                    }
-                    60% {
-                        transform: translateX(10px);
-                    }
-                    100% {
-                        transform: translateX(0);
-                    }
-                }
-
-                .animate-bounce-carousel {
-                    animation: bounce-carousel 1s ease;
-                }
-
-                .shadow-lg {
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                }
-            `}</style>
+            {/* Project Detail Modal */}
+            {isModalOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+                    onClick={closeModal}
+                >
+                    <div
+                        className="relative w-full max-w-4xl mx-4 bg-white p-6 rounded-lg"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button className="absolute top-4 right-4 text-gray-700 text-2xl" onClick={closeModal}>×
+                        </button>
+                        <Image
+                            src={projects[activeImageIndex].src}
+                            alt={projects[activeImageIndex].title}
+                            layout="responsive"
+                            width={1600}
+                            height={900}
+                            className="rounded-lg"
+                        />
+                        <h3 className="text-xl font-extralight pb-2 mt-4">{projects[activeImageIndex].title}</h3>
+                        <p className="text-gray-600 pb-6 mt-2">{projects[activeImageIndex].description}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
