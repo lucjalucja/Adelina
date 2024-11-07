@@ -86,7 +86,7 @@ export default function Home() {
                         href="#contact"
                         className="mt-2 text-sm text-gray-200 hover:underline"
                     >
-                        Lub sprawdź inne sposoby kontaktu
+                        Napisz do mnie
                     </a>
                 </div>
             </section>
