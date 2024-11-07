@@ -130,20 +130,7 @@ html, body {
   }
 }
 
-@media (max-width: 768px) {
-  section.relative {
-    padding: 0.5rem;
-  }
 
-  section.relative h1 {
-    font-size: 1.8rem;
-    margin-top: 0.5rem; /* Minor spacing adjustment */
-  }
-
-  .hero-logo {
-    width: 80px; /* Adjust logo size for better fit on mobile */
-  }
-}
 
 .carousel-arrow {
   position: relative; /* Position change on mobile */
@@ -162,9 +149,6 @@ html, body {
     padding: 0.3rem 0.5rem; /* Further reduce padding */
   }
 
-  section#projects h2, section#projects p {
-    font-size: 0.75rem; /* Slightly smaller font for compactness */
-  }
 
   .carousel-arrow {
     padding: 0.2rem 0.3rem; /* Smaller arrow size */
@@ -242,13 +226,7 @@ section#projects .grid > div:hover {
   transform: scale(1.02);
 }
 
-section#projects h2 {
 
-    font-weight: 100;
-    margin-top: 0.5rem;
-    color: var(--foreground);
-
-}
 section#projects h3 {
   font-weight: 100;
   color:  var(--foreground);
@@ -285,9 +263,6 @@ section#projects p {
 
 /* Specific adjustments for smaller screens */
 @media (max-width: 768px) {
-  section#projects h2, section#projects p {
-    font-size: 0.8rem; /* Smaller font size for mobile */
-  }
 
   section.relative h1 {
     font-size: 1.5rem; /* Smaller hero title */
@@ -302,9 +277,6 @@ section#about p {
   color: #777777; /* Softer gray for project description */
 }
 
-section#contact p {
-  color: #777777; /* Softer gray for project description */
-}
 
 /* Footer Styling */
 footer {

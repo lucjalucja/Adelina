@@ -76,7 +76,7 @@ export default function Home() {
                     {/* Call-to-Action Button */}
                     <a
                         href="tel:+48504381057"
-                        className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-200"
+                        className="mt-6 px-6 py-3 bg-red-900 hover:bg-red-950 text-white font-semibold rounded-full shadow-lg transition-all duration-200"
                     >
                         Zadzwoń teraz: +48 504 381 057
                     </a>
