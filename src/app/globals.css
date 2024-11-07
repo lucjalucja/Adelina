@@ -277,7 +277,15 @@ section#about p {
   color: #777777; /* Softer gray for project description */
 }
 
+#button{
+  background-color: #f8abb9;
 
+}
+
+#button:hover{
+  background-color: #e18f9c;
+
+}
 /* Footer Styling */
 footer {
   background-color: var(--background);

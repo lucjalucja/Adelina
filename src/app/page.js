@@ -65,7 +65,7 @@ export default function Home() {
             </header>
 
             {/* Hero Section */}
-            <section className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100 mb-16">
+            <section id= 'hero' className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100 mb-16">
                 <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
@@ -74,9 +74,9 @@ export default function Home() {
                     <p className="mt-4 text-lg text-center">Podziel się swoją wizją – pomogę Ci ją zrealizować!</p>
 
                     {/* Call-to-Action Button */}
-                    <a
+                    <a id = 'button'
                         href="tel:+48504381057"
-                        className="mt-6 px-6 py-3 bg-red-900 hover:bg-red-950 text-white font-semibold rounded-full shadow-lg transition-all duration-200"
+                        className="mt-6 px-6 py-3  text-white font-semibold rounded-full shadow-lg transition-all duration-200"
                     >
                         Zadzwoń teraz: +48 504 381 057
                     </a>
