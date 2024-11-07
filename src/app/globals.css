@@ -115,7 +115,7 @@ html, body {
 @media only screen and (max-width: 768px) {
   #hero {
     padding-top: 50px; /* Reduce padding-top for mobile */
-    height: 250px; /* Reduce height for mobile */
+    height: 60vh;; /* Reduce height for mobile */
   }
 }
 
