@@ -1,80 +1,11 @@
-// pages/index.js
-
 "use client";
 
 import { useState, useCallback } from "react";
 import Image from "next/image";
 import Head from "next/head";
 
-export default function Home() {
-    // Define meta tags for social preview
-    const SEO = {
-        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz - Adelina Interiors",
-        description:
-            "Profesjonalne usługi architekta wnętrz w Gdańsku. Tworzę unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
-        url: "https://www.adelina-interiors.co",
-        image: "https://www.adelina-interiors.co/path-to-your-preview-image.jpg",
-    };
-
-    return (
-        <>
-            <Head>
-                {/* Primary Meta Tags */}
-                <title>{SEO.title}</title>
-                <meta name="description" content={SEO.description} />
-
-                {/* Open Graph / Facebook Meta Tags */}
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={SEO.url} />
-                <meta property="og:title" content={SEO.title} />
-                <meta property="og:description" content={SEO.description} />
-                <meta property="og:image" content={SEO.image} />
-                <meta property="og:site_name" content="Adelina Interiors" />
-                <meta property="og:locale" content="pl_PL" />
-
-            </Head>
-
-            {/* Page Content */}
-            <div className="min-h-screen flex flex-col relative">
-                <header className="flex justify-between items-center p-4 header-shadow">
-                    <div className="p-1">
-                        <Image src="/logo.png" alt="Logo" width={30} height={30} />
-                    </div>
-                </header>
-
-                {/* Main Content */}
-                <section className="py-16">
-                    <h1 className="text-5xl font-light text-center">ADELINA INTERIORS</h1>
-                    <p className="mt-4 text-lg text-center">Tworzę wnętrza, które łączą styl i funkcjonalność.</p>
-
-                </section>
-            </div>
-        </>
-    );
-}
 
 
-
-const SEO = {
-    title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
-    description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Tworzę unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
-    openGraph: {
-        type: "website",
-        locale: "pl_PL",
-        url: "https://www.adelina-interiors.co",
-        site_name: "Adelina Interiors",
-        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
-        description: "Kompleksowe usługi architektoniczne w Gdańsku. Skontaktuj się, aby stworzyć swoje wymarzone wnętrze!",
-        images: [
-            {
-                src: "project1.jpeg",
-                width: 1200,
-                height: 630,
-                alt: "Adelina Interiors Gdańsk - Projekt przykładowy",
-            },
-        ],
-    },
-};
 
 
 export default function Home() {
@@ -84,6 +15,13 @@ export default function Home() {
         { src: "/project3.jpg", title: "Łazienka 5m²", description: "Na parterze dla gości, kompleksowy projekt" },
         { src: "/project4.jpg", title: "Sypialnia 18 m²", description: "Sypialnia w jasnych barwach, kompleksowy projekt" },
     ];
+
+    const SEO = {
+        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz - Adelina Interiors",
+        description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Tworzę unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
+        url: "https://www.adelina-interiors.co",
+        image: "https://www.adelina-interiors.co/path-to-your-preview-image.jpg", // Ensure this image URL is absolute
+    };
 
     // Smooth Scroll Handlers without URL change
     const scrollToSection = (sectionId) => {
@@ -106,7 +44,24 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col relative">
+        <>
+            <Head>
+                {/* Primary Meta Tags */}
+                <title>{SEO.title}</title>
+                <meta name="description" content={SEO.description} />
+
+                {/* Open Graph / Facebook Meta Tags */}
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={SEO.url} />
+                <meta property="og:title" content={SEO.title} />
+                <meta property="og:description" content={SEO.description} />
+                <meta property="og:image" content={SEO.image} />
+                <meta property="og:site_name" content="Adelina Interiors" />
+                <meta property="og:locale" content="pl_PL" />
+
+            </Head>
+
+            <div className="min-h-screen flex flex-col relative">
             {/* Header Section */}
             <header className="flex justify-between items-center p-4 header-shadow">
                 <div className="p-1">
@@ -358,6 +313,7 @@ export default function Home() {
                     </div>
                 </div>
             )}
-        </div>
+            </div>
+        </>
     );
 }
