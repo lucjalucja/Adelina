@@ -2,10 +2,6 @@
 
 import { useState, useCallback } from "react";
 import Image from "next/image";
-import Head from "next/head";
-
-
-
 
 
 export default function Home() {
@@ -16,12 +12,6 @@ export default function Home() {
         { src: "/project4.jpg", title: "Sypialnia 18 m²", description: "Sypialnia w jasnych barwach, kompleksowy projekt" },
     ];
 
-    const SEO = {
-        title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz - Adelina Interiors",
-        description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Tworzę unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
-        url: "https://www.adelina-interiors.co",
-        image: "https://www.adelina-interiors.co/path-to-your-preview-image.jpg", // Ensure this image URL is absolute
-    };
 
     // Smooth Scroll Handlers without URL change
     const scrollToSection = (sectionId) => {
@@ -44,22 +34,6 @@ export default function Home() {
     }, []);
 
     return (
-        <>
-            <Head>
-                {/* Primary Meta Tags */}
-                <title>{SEO.title}</title>
-                <meta name="description" content={SEO.description} />
-
-                {/* Open Graph / Facebook Meta Tags */}
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={SEO.url} />
-                <meta property="og:title" content={SEO.title} />
-                <meta property="og:description" content={SEO.description} />
-                <meta property="og:image" content={SEO.image} />
-                <meta property="og:site_name" content="Adelina Interiors" />
-                <meta property="og:locale" content="pl_PL" />
-
-            </Head>
 
             <div className="min-h-screen flex flex-col relative">
             {/* Header Section */}
@@ -102,7 +76,7 @@ export default function Home() {
 
             {/* Hero Section */}
             <section id='hero'
-                     className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100 mb-16">
+                     className="relative h-[60vh] flex flex-col items-center justify-center bg-gray-100">
                 <Image src="/hero.png" alt="Interior" layout="fill" objectFit="cover" className="opacity-100"/>
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative flex flex-col items-center text-white z-10">
@@ -314,6 +288,5 @@ export default function Home() {
                 </div>
             )}
             </div>
-        </>
     );
 }

@@ -4,7 +4,7 @@
 
 :root {
   --background: #F3F3F3;
-  --foreground: #3C3B3B;
+  --foreground: #252525;
   --accent: #ffffff; /* Soft gray for accents */
   --overlay: rgba(0, 0, 0, 0.09); /* Soft semi-transparent overlay for hero section */
 }
@@ -18,6 +18,11 @@
   .sidebar-open {
     transform: translateX(0); /* Slide in */
   }
+  /* styles/globals.css or your global CSS file */
+  html {
+    scroll-behavior: smooth;
+  }
+
 
   /* Carousel arrow styles */
   .carousel-arrow {
@@ -62,41 +67,7 @@ html, body {
   }
 }
 
-/* Carousel Styling for Mobile */
-@media (max-width: 768px) {
-  .carousel-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-  }
 
-  .carousel-item {
-    min-width: 100%;
-    scroll-snap-align: center;
-    flex: none;
-    padding: 1rem;
-  }
-
-  .carousel-arrow {
-    font-size: 1.2rem;
-    padding: 0.2rem;
-  }
-}
-
-/* Navigation Bar Adjustments for Compact Layout */
-@media (max-width: 768px) {
-  header nav {
-    display: flex;
-    flex-wrap: nowrap;
-    padding: 0.5rem 1rem;
-  }
-
-  header nav a {
-    padding: 0 0.5rem;
-    font-size: 0.9rem;
-  }
-}
 
 @media (max-width: 768px) {
   /* Hide the desktop navigation */
@@ -137,18 +108,6 @@ html, body {
 }
 
 
-
-.carousel-arrow {
-  position: relative; /* Position change on mobile */
-  transition: opacity 0.2s;
-}
-
-@media (max-width: 768px) {
-  .carousel-arrow {
-    position: absolute;
-    opacity: 0.7;
-  }
-}
 
 @media (max-width: 768px) {
   header nav a {
