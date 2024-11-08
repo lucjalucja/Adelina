@@ -159,7 +159,28 @@ section#contact .text-center {
   max-width: 600px; /* Limit width for better readability */
 }
 
+@media (max-width: 768px) {
+  .hero-section {
+    height: 40vh; /* Decrease height for mobile */
+    padding: 0 1rem; /* Adjust horizontal padding */
+  }
 
+  .hero-content {
+    text-align: center; /* Center content for mobile */
+  }
+
+  .hero-content h1 {
+    font-size: 2rem; /* Responsive size for h1 */
+  }
+
+  .hero-content p {
+    font-size: 1rem; /* Responsive size for p */
+  }
+
+  .hero-button {
+    margin: 1rem auto; /* Center the button horizontally */
+  }
+}
 
 
 .project-card {
