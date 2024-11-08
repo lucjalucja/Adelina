@@ -161,7 +161,7 @@ section#contact .text-center {
 
 @media (max-width: 768px) {
   .hero-section {
-    height: 40vh; /* Decrease height for mobile */
+    height: 60vh; /* Decrease height for mobile */
     padding: 0 1rem; /* Adjust horizontal padding */
   }
 

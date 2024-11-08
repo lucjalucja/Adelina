@@ -33,7 +33,7 @@ export const metadata = {
             locale: "pl_PL",
             url: "https://www.adelina-interiors.co",
             siteName: "Adelina Interiors",
-            title: "Architekt wnętrz Gdańsk | Projektowanie wnętrz",
+            title: "Adelina Interiors",
             description: "Kompleksowe usługi architektoniczne w Gdańsku.",
             images: [
                 {
