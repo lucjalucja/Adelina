@@ -6,6 +6,7 @@ const geistSans = localFont({
     variable: "--font-geist-sans",
     weight: "100 900",
 });
+
 const geistMono = localFont({
     src: "./fonts/GeistMonoVF.woff",
     variable: "--font-geist-mono",
@@ -23,42 +24,58 @@ const icons = {
     manifest: "/site.webmanifest",
 };
 
+export const googleSiteVerificationMeta = (
+    <meta name="google-site-verification" content="7DbiUN4wteiczj-rHDDrjb7cLQizFlOfPclxyaKV3qg" />
+);
+
 // Export metadata separately for title and description only
 export const metadata = {
     title: "Adelina Interiors",
-    description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Unikalne i dunkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
+    description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
+    openGraph: {
+        type: "website",
+        locale: "pl_PL",
+        url: "https://www.adelina-interiors.co",
+        siteName: "Adelina Interiors",
+        title: "Adelina Interiors",
+        description: "Kompleksowe usługi architektoniczne w Gdańsku.",
+        images: [
+            {
+                url: "https://www.adelina-interiors.co/project1.jpeg", // Absolute URL for Open Graph image
+                width: 1200,
+                height: 630,
+                alt: "Adelina Interiors Gdańsk - Projekt przykładowy",
+            },
+        ],
+    },
+};
 
-        openGraph: {
-            type: "website",
-            locale: "pl_PL",
-            url: "https://www.adelina-interiors.co",
-            siteName: "Adelina Interiors",
-            title: "Adelina Interiors",
-            description: "Kompleksowe usługi architektoniczne w Gdańsku.",
-            images: [
-                {
-                    url: "https://www.adelina-interiors.co/project1.jpeg", // Absolute URL for Open Graph image
-                    width: 1200,
-                    height: 630,
-                    alt: "Adelina Interiors Gdańsk - Projekt przykładowy",
-                },
-            ],
-        },
-    };
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="pl">
         <head>
+            {/* Google Site Verification Meta Tag */}
+            {googleSiteVerificationMeta}
             {/* Render icons directly in the <head> to ensure compatibility */}
             {icons.icon.map((iconProps, index) => (
                 <link key={index} {...iconProps} />
             ))}
             <link rel="apple-touch-icon" href={icons.apple} />
             <link rel="manifest" href={icons.manifest} />
+
+            {/* Open Graph Meta Tags */}
+            <meta property="og:type" content={metadata.openGraph.type} />
+            <meta property="og:locale" content={metadata.openGraph.locale} />
+            <meta property="og:url" content={metadata.openGraph.url} />
+            <meta property="og:site_name" content={metadata.openGraph.siteName} />
+            <meta property="og:title" content={metadata.openGraph.title} />
+            <meta property="og:description" content={metadata.openGraph.description} />
+            <meta property="og:image" content={metadata.openGraph.images[0].url} />
+            <meta property="og:image:width" content={metadata.openGraph.images[0].width} />
+            <meta property="og:image:height" content={metadata.openGraph.images[0].height} />
+            <meta property="og:image:alt" content={metadata.openGraph.images[0].alt} />
         </head>
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         </body>
         </html>
