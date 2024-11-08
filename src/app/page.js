@@ -103,7 +103,6 @@ export default function Home() {
             <section id = 'hero' className="hero-section">
                 <div className="hero-overlay"></div>
                 <div className="hero-content">
-                    <Image src="/logo_light.png" alt="Adelina Interiors Logo" width={100} height={100}/>
                     <h1 className="text-3xl text-white font-normal mt-4">ADELINA INTERIORS</h1>
                     <p className="text-lg text-white font-light mt-2">Estetyka i komfort w idealnych proporcjach.</p>
                     <p className="text-lg text-white font-light "> Wnętrza, które odpowiadają na potrzeby codziennego życia.</p>
