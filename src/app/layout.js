@@ -16,8 +16,8 @@ const geistMono = localFont({
 // Define icons separately in a constant
 const icons = {
     icon: [
-        { rel: "icon", type: "image/png", href: "/favicon-96x96.png", sizes: "96x96" },
-        { rel: "icon", type: "image/png", href: "/favicon-192x192.png", sizes: "192x192" }, // Added the 192x192 size
+        { rel: "icon", type: "image/png", href: "/android-chrome-192x192.png", sizes: "192x192" },
+        { rel: "icon", type: "image/ico", href: "/favicon.ico"}, // Added the 192x192 size
         { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
         { rel: "shortcut icon", href: "/favicon.ico" },
     ],
