@@ -2,6 +2,9 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+
 
 export default function Home() {
     const projects = [
@@ -93,7 +96,6 @@ export default function Home() {
                 </button>
 
                 {/* Overlay Menu for Mobile */}
-                {/* Overlay Menu for Mobile */}
                 {isMenuOpen && (
                     <div
                         className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-12 transition-transform duration-500 ease-in-out transform translate-x-0"
@@ -108,6 +110,17 @@ export default function Home() {
                         >
                             ×
                         </button>
+
+                        {/* Instagram Icon */}
+                        <a
+                            href="https://www.instagram.com/adelina.interiors" // Replace with your Instagram URL
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()} // Prevent overlay close on icon click
+                            className="text-5xl mb-4" // Set icon size and add some margin below
+                        >
+                            <FontAwesomeIcon icon={faInstagram} />
+                        </a>
 
                         {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
                             <button
@@ -125,6 +138,8 @@ export default function Home() {
                         ))}
                     </div>
                 )}
+
+
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-gray-700 text-base font-medium space-x-8">
