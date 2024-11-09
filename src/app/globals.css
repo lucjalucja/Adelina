@@ -161,20 +161,21 @@ section#contact .text-center {
 
 @media (max-width: 768px) {
   .hero-section {
-    height: 60vh; /* Decrease height for mobile */
+    height: 60vh; /* Adjust height for mobile */
     padding: 0 1rem; /* Adjust horizontal padding */
+    justify-content: center; /* Center content horizontally */
   }
 
   .hero-content {
-    text-align: center; /* Center content for mobile */
+    text-align: center; /* Center text for mobile */
   }
 
   .hero-content h1 {
-    font-size: 2rem; /* Responsive size for h1 */
+    font-size: 2rem; /* Responsive font size for h1 */
   }
 
   .hero-content p {
-    font-size: 1rem; /* Responsive size for p */
+    font-size: 1rem; /* Responsive font size for p */
   }
 
   .hero-button {

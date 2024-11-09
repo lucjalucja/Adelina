@@ -142,7 +142,10 @@ export default function Home() {
                 <div className="hero-content">
                     <h1 className="text-3xl text-white font-normal mt-4">ADELINA INTERIORS</h1>
                     <p className="text-lg text-white font-light mt-2">Estetyka i komfort w idealnych proporcjach.</p>
-                    <button onClick={() => scrollToSection("contact")} className="mt-6 px-6 py-2 font-semibold border text-white border-white rounded-md hover:bg-white hover:text-gray-900">
+                    <p className="text-lg text-white font-light "> Wnętrza, które odpowiadają na potrzeby codziennego
+                        życia.</p>
+                    <button onClick={() => scrollToSection('contact')}
+                            className="mt-6 px-6 py-2 font-semibold border text-white border-white rounded-md hover:bg-white hover:text-gray-900">
                         Skontaktuj się
                     </button>
                 </div>
