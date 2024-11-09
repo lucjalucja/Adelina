@@ -81,7 +81,7 @@ export default function Home() {
     return (
         <div className="min-h-screen flex flex-col relative">
             {/* Header Section */}
-            <header className="flex justify-between items-center px-6 py-3 bg-white shadow-md fixed w-full z-50">
+            <header className="flex justify-between items-center px-6 py-2 bg-white shadow-md fixed w-full z-50">
                 <div className="p-1 cursor-pointer">
                     {/* Logo with click to scroll to hero */}
                     <Image src="/logo.png" alt="Logo" width={35} height={35} onClick={() => scrollToSection("hero")}/>
@@ -93,12 +93,18 @@ export default function Home() {
                 </button>
 
                 {/* Overlay Menu for Mobile */}
+                {/* Overlay Menu for Mobile */}
                 {isMenuOpen && (
                     <div
-                        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-12 transition-transform duration-500 ease-in-out transform translate-x-0">
+                        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-12 transition-transform duration-500 ease-in-out transform translate-x-0"
+                        onClick={() => setIsMenuOpen(false)} // Close menu when clicking outside
+                    >
                         <button
                             className="text-3xl absolute top-8 right-8 focus:outline-none transition-transform duration-300 transform hover:scale-125"
-                            onClick={() => setIsMenuOpen(false)}
+                            onClick={(e) => {
+                                e.stopPropagation(); // Prevent closing when clicking the close button
+                                setIsMenuOpen(false);
+                            }}
                         >
                             ×
                         </button>
@@ -106,9 +112,11 @@ export default function Home() {
                         {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
                             <button
                                 key={section}
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent closing when clicking on buttons
                                     const sectionIds = ["projects", "about", "offer", "contact"];
                                     scrollToSection(sectionIds[index]);
+                                    setIsMenuOpen(false); // Close the menu after navigation
                                 }}
                                 className="capitalize text-3xl tracking-wider transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-gray-300"
                             >
