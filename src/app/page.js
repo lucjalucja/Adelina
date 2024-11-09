@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
@@ -11,19 +11,14 @@ export default function Home() {
         { src: "/project4.jpg", title: "Sypialnia 18 m²", description: "Sypialnia w jasnych barwach, kompleksowy projekt" },
     ];
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const scrollToSection = (sectionId) => {
         document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
         setIsMenuOpen(false);
     };
-    const sectionIds = {
-        "projekty": "projects",
-        "o mnie": "about",
-        "oferta": "offer",
-        "kontakt": "contact",
-    };
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const openModal = (index) => {
         setActiveImageIndex(index);
@@ -34,10 +29,57 @@ export default function Home() {
         setIsModalOpen(false);
     }, []);
 
+    // Internal AboutSection component
+    const AboutSection = () => {
+        useEffect(() => {
+            const script = document.createElement("script");
+            script.src = "https://static.elfsight.com/platform/platform.js";
+            script.async = true;
+            document.body.appendChild(script);
+
+            // Clean up the script when the component unmounts
+            return () => {
+                document.body.removeChild(script);
+            };
+        }, []);
+
+        return (
+            <section id="about" className="py-16 bg-white flex flex-col items-center">
+                <div className="flex flex-col md:flex-row md:w-2/3">
+                    {/* Profile Picture on the Left */}
+                    <div className="md:w-1/3 h-80 relative overflow-hidden">
+                        <Image src="/profile.jpg" alt="Adelina" layout="fill" objectFit="cover"
+                               className="rounded-lg"/>
+                    </div>
+
+                    {/* Text Content on the Right */}
+                    <div className="md:w-2/3 flex flex-col items-center md:items-start justify-center p-6 space-y-6">
+                        <div>
+                            <h2 className="text-3xl font-light mb-4">O mnie</h2>
+                            <p className="text-lg text-gray-600">
+                                Tworzę wnętrza, które łączą styl i funkcjonalność, skrojone pod Ciebie. Specjalizuję się
+                                w
+                                projektach mieszkań, domów i przestrzeni komercyjnych – od koncepcji aż po pełną
+                                dokumentację i przejrzyste kosztorysy. Wszystko, czego potrzebujesz, by Twoja przestrzeń
+                                była nie tylko piękna, ale i wygodna.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Elfsight Reviews Widget Positioned Below Entire Section */}
+                <div className="w-full mt-8 flex justify-center">
+                    <div className="elfsight-app-5ec524fd-64a3-4cb6-aba7-485d6b227683 w-full md:w-2/3"
+                         data-elfsight-app-lazy="true"></div>
+                </div>
+            </section>
+
+
+        );
+    };
+
     return (
         <div className="min-h-screen flex flex-col relative">
-            {/* Header Section */}
-
             {/* Header Section */}
             <header className="flex justify-between items-center px-6 py-3 bg-white shadow-md fixed w-full z-50">
                 <div className="p-1 cursor-pointer">
@@ -52,23 +94,23 @@ export default function Home() {
 
                 {/* Overlay Menu for Mobile */}
                 {isMenuOpen && (
-                    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-8 transition-opacity duration-300 ease-in-out">
-
-                        {/* Close Button */}
-                        <button className="text-3xl absolute top-8 right-8 focus:outline-none" onClick={() => setIsMenuOpen(false)}>
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center text-white text-lg space-y-12 transition-transform duration-500 ease-in-out transform translate-x-0">
+                        <button
+                            className="text-3xl absolute top-8 right-8 focus:outline-none transition-transform duration-300 transform hover:scale-125"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
                             ×
                         </button>
 
-                        {/* Menu Links in Polish */}
                         {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
                             <button
                                 key={section}
                                 onClick={() => {
                                     const sectionIds = ["projects", "about", "offer", "contact"];
                                     scrollToSection(sectionIds[index]);
-                                    setIsMenuOpen(false); // Close menu on link click
                                 }}
-                                className="capitalize text-2xl hover:text-gray-400 transition-colors duration-200 ease-in-out"
+                                className="capitalize text-3xl tracking-wider transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-gray-300"
                             >
                                 {section}
                             </button>
@@ -88,26 +130,19 @@ export default function Home() {
                             className="capitalize relative pb-1 hover:text-gray-900 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-300"
                         >
                             {section}
-                            {/* Underline hover effect */}
                             <span className="block w-full h-[2px] bg-transparent hover:bg-gray-900 absolute bottom-0 left-0 transition-all duration-200 ease-in-out"></span>
                         </button>
                     ))}
                 </nav>
             </header>
 
-
-
-
-
             {/* Hero Section */}
-            <section id = 'hero' className="hero-section">
+            <section id="hero" className="hero-section">
                 <div className="hero-overlay"></div>
                 <div className="hero-content">
                     <h1 className="text-3xl text-white font-normal mt-4">ADELINA INTERIORS</h1>
                     <p className="text-lg text-white font-light mt-2">Estetyka i komfort w idealnych proporcjach.</p>
-                    <p className="text-lg text-white font-light "> Wnętrza, które odpowiadają na potrzeby codziennego życia.</p>
-                    <button onClick={() => scrollToSection('contact')}
-                            className="mt-6 px-6 py-2 font-semibold border text-white border-white rounded-md hover:bg-white hover:text-gray-900">
+                    <button onClick={() => scrollToSection("contact")} className="mt-6 px-6 py-2 font-semibold border text-white border-white rounded-md hover:bg-white hover:text-gray-900">
                         Skontaktuj się
                     </button>
                 </div>
@@ -118,11 +153,9 @@ export default function Home() {
                 <h2 className="text-3xl font-light mb-8 text-center">Zrealizowane projekty</h2>
                 <div className="px-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {projects.map((project, index) => (
-                        <div key={index} className="cursor-pointer group overflow-hidden"
-                             onClick={() => openModal(index)}>
+                        <div key={index} className="cursor-pointer group overflow-hidden" onClick={() => openModal(index)}>
                             <div className="relative h-72 w-full">
-                                <Image src={project.src} alt={project.title} layout="fill" objectFit="cover"
-                                       className="transform transition-transform duration-300 group-hover:scale-105"/>
+                                <Image src={project.src} alt={project.title} layout="fill" objectFit="cover" className="transform transition-transform duration-300 group-hover:scale-105" />
                             </div>
                             <h3 className="text-lg px-6 pt-4 pb-2 font-light mt-2">{project.title}</h3>
                             <p className="text-sm px-6 pb-8 text-gray-500">{project.description}</p>
@@ -228,63 +261,36 @@ export default function Home() {
             </section>
 
             {/* About Section */}
-            <section id="about" className="py-16 bg-white flex flex-col md:flex-row">
-                <div className="md:w-1/3 h-80 relative overflow-hidden">
-                    <Image src="/profile.jpg" alt="Adelina" layout="fill" objectFit="cover" className="rounded-l-lg"/>
-                </div>
-                <div className="md:w-1/2 flex items-center justify-center p-6">
-                    <div>
-                        <h2 className="text-3xl font-light mb-4">O mnie</h2>
-                        <p className="text-lg text-gray-600">Tworzę wnętrza, które łączą styl i funkcjonalność, skrojone pod Ciebie. Specjalizuję się w projektach mieszkań, domów i przestrzeni komercyjnych – od koncepcji aż po pełną dokumentację i przejrzyste kosztorysy. Wszystko, czego potrzebujesz, by Twoja przestrzeń była nie tylko piękna, ale i wygodna.</p>
-                    </div>
-                </div>
-            </section>
+            <AboutSection />
 
             {/* Contact Section */}
             <section id="contact" className="py-16 px-6 flex flex-col items-center bg-gray-100">
                 <h2 className="text-3xl font-light mb-4 text-gray-900">Kontakt</h2>
-                <p className="text-lg mb-4 text-gray-700 text-center">Umów się na niezobowiązującą wycenę </p>
+                <p className="text-lg mb-4 text-gray-700 text-center">Umów się na niezobowiązującą wycenę</p>
                 <div className="text-lg mb-4 text-center">
-                    <p>Email: <a href="mailto:adelina.drabot@gmail.com"
-                                 className="text-pink-500 hover:underline">adelina.drabot@gmail.com</a></p>
-                    <p>Telefon: <a href="tel:+48504381057" className="text-pink-500 hover:underline">+48 504 381 057</a>
-                    </p>
-                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank"
-                                     rel="noopener noreferrer"
-                                     className="text-pink-500 hover:underline">@adelina.interiors</a></p>
+                    <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-pink-500 hover:underline">adelina.drabot@gmail.com</a></p>
+                    <p>Telefon: <a href="tel:+48504381057" className="text-pink-500 hover:underline">+48 504 381 057</a></p>
+                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">@adelina.interiors</a></p>
                 </div>
             </section>
 
             {/* Footer */}
             <footer className="py-8 flex flex-col items-center text-gray-700 text-sm">
-                <div>
-                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
-                </div>
+                <Image src="/logo.png" alt="Footer Logo" width={30} height={30} />
                 <p className="mt-4 text-gray-700">© 2024 Adelina Interiors. All rights reserved.</p>
             </footer>
 
             {/* Project Detail Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
-                     onClick={closeModal}>
-                    <div className="relative w-full max-w-3xl mx-4 bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-300 scale-100"
-                         onClick={(e) => e.stopPropagation()}>
-
-                        {/* Close Button */}
-                        <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none" onClick={closeModal}>
-                            ×
-                        </button>
-
-                        {/* Image */}
-                        <Image src={projects[activeImageIndex].src} alt={projects[activeImageIndex].title} layout="responsive" width={1600} height={900} className="rounded-lg"/>
-
-                        {/* Project Title and Description */}
+                <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50" onClick={closeModal}>
+                    <div className="relative w-full max-w-3xl mx-4 bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-300 scale-100" onClick={(e) => e.stopPropagation()}>
+                        <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none" onClick={closeModal}>×</button>
+                        <Image src={projects[activeImageIndex].src} alt={projects[activeImageIndex].title} layout="responsive" width={1600} height={900} className="rounded-lg" />
                         <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-2">{projects[activeImageIndex].title}</h3>
                         <p className="text-gray-600 mb-6">{projects[activeImageIndex].description}</p>
                     </div>
                 </div>
             )}
-
         </div>
     );
 }

@@ -31,8 +31,9 @@ export const googleSiteVerificationMeta = (
 
 // Export metadata separately for title and description only
 export const metadata = {
-    title: "Adelina Interiors",
-    description: "Profesjonalne usługi architekta wnętrz w Gdańsku. Unikalne i funkcjonalne projekty wnętrz dostosowane do potrzeb klientów.",
+    title: "Adelina Interiors | Projektant wnętrz | Aranżacja | Gdańsk, Trójmiasto",
+    description: "Szukasz doświadczonego projektanta wnętrz w Gdańsku i okolicach? Oferuję kompleksowe usługi projektowania wnętrz: od mieszkań po domy i lokale komercyjne. Tworzę nowoczesne, stylowe i funkcjonalne przestrzenie na miarę Twoich potrzeb. Obejrzyj moje portfolio, poznaj opinie klientów i skontaktuj się, aby omówić szczegóły swojego projektu!",
+    keyword: `projektant wnętrz Gdańsk, architekt wnętrz Gdańsk, aranżacja wnętrz Gdańsk, projektowanie wnętrz Gdańsk, projektant wnętrz Trójmiasto, architekt wnętrz Trójmiasto, aranżacja wnętrz Trójmiasto, projektowanie wnętrz Trójmiasto`,
     openGraph: {
         type: "website",
         locale: "pl_PL",
