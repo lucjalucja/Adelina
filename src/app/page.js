@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Analytics } from "@vercel/analytics/react"
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -116,7 +117,7 @@ export default function Home() {
                             href="https://www.instagram.com/adelina.interiors" // Replace with your Instagram URL
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()} // Prevent overlay close on icon click
+                            onClick={(e) => e.stopPropagation()} // Prevent overlaynpm i @vercel/analytics close on icon click
                             className="text-5xl mb-4" // Set icon size and add some margin below
                         >
                             <FontAwesomeIcon icon={faInstagram} />
