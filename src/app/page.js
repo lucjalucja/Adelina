@@ -12,6 +12,8 @@ import { useSwipeable } from 'react-swipeable';
 
 export default function Home() {
 
+    const [animationDirection, setAnimationDirection] = useState("slide-in-right");
+
     const projects = [
         {
             title: "Mieszkanie Kartuska 32 m²",
@@ -90,21 +92,18 @@ export default function Home() {
         setActiveProject(null);
     }, []);
 
-    const nextImage = useCallback(() => {
-        if (activeProject) {
-            setActiveImageIndex((prevIndex) =>
-                (prevIndex + 1) % activeProject.images.length
-            );
-        }
-    }, [activeProject]);
+    const nextImage = () => {
+        setAnimationDirection("slide-in-right");
+        setActiveImageIndex((prevIndex) => (prevIndex + 1) % activeProject.images.length);
+    };
 
-    const prevImage = useCallback(() => {
-        if (activeProject) {
-            setActiveImageIndex((prevIndex) =>
-                (prevIndex - 1 + activeProject.images.length) % activeProject.images.length
-            );
-        }
-    }, [activeProject]);
+    const prevImage = () => {
+        setAnimationDirection("slide-in-left");
+        setActiveImageIndex((prevIndex) =>
+            (prevIndex - 1 + activeProject.images.length) % activeProject.images.length
+        );
+    };
+
 
     const swipeHandlers = useSwipeable({
         onSwipedLeft: nextImage,
@@ -392,13 +391,14 @@ export default function Home() {
             </footer>
 
             {/* Project Detail Modal */}
+            (
             {isModalOpen && activeProject && (
                 <div
                     className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
                     onClick={closeModal}
                 >
                     <div
-                        className="relative w-full max-w-5xl h-[80vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
+                        className="relative w-full max-w-5xl h-[80vh] sm:h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 my-4 sm:my-6 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
@@ -427,7 +427,7 @@ export default function Home() {
                                 alt={activeProject.title}
                                 layout="fill"
                                 objectFit="contain"
-                                className="rounded-lg"
+                                className={`rounded-lg ${animationDirection}`}
                             />
                             <button
                                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
@@ -462,8 +462,12 @@ export default function Home() {
                                 ></div>
                             ))}
                         </div>
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
-                        <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">{activeProject.description}</p>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">
+                            {activeProject.title}
+                        </h3>
+                        <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">
+                            {activeProject.description}
+                        </p>
                     </div>
                 </div>
 
