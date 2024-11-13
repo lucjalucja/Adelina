@@ -12,7 +12,6 @@ import { useSwipeable } from 'react-swipeable';
 
 export default function Home() {
 
-    const [animationDirection, setAnimationDirection] = useState("slide-in-right");
 
     const projects = [
         {
@@ -36,9 +35,35 @@ export default function Home() {
             images: ["/project4.jpg", ...Array.from({ length: 5 }, (_, i) => `/project4-${i}.jpg`)]
         },
     ]
+
+
+    // Function to preload images for all projects
+    const preloadImages = () => {
+        let loadedCount = 0;
+        const totalImages = projects.reduce((acc, project) => acc + project.images.length, 0);
+
+        projects.forEach((project) => {
+            project.images.forEach((src) => {
+                const img = new window.Image();
+                img.src = src;
+                img.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === totalImages) {
+                        setImagesLoaded(true); // Set to true when all images are preloaded
+                    }
+                };
+            });
+        });
+    };
+
+    // Preload images when the component mounts
+    useEffect(() => {
+        preloadImages();
+    }, []);
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeProject, setActiveProject] = useState(null);
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [imagesLoaded, setImagesLoaded] = useState(false);
 
@@ -86,23 +111,32 @@ export default function Home() {
         });
     };
 
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [animationDirection, setAnimationDirection] = useState("");
 
+// Helper function to reset the animation direction
+    const resetAnimation = (direction) => {
+        setAnimationDirection(""); // Clear current animation
+        setTimeout(() => setAnimationDirection(direction), 10); // Apply new direction
+    };
+
+// Functions to handle image navigation with animation
+    const nextImage = () => {
+        resetAnimation("slide-in-right");
+        setActiveImageIndex((prevIndex) => (prevIndex + 1) % activeProject.images.length);
+    };
+
+    const prevImage = () => {
+        resetAnimation("slide-in-left");
+        setActiveImageIndex((prevIndex) =>
+            (prevIndex - 1 + activeProject.images.length) % activeProject.images.length
+        );
+    };
     const closeModal = useCallback(() => {
         setIsModalOpen(false);
         setActiveProject(null);
     }, []);
 
-    const nextImage = () => {
-        setAnimationDirection("slide-in-right");
-        setActiveImageIndex((prevIndex) => (prevIndex + 1) % activeProject.images.length);
-    };
-
-    const prevImage = () => {
-        setAnimationDirection("slide-in-left");
-        setActiveImageIndex((prevIndex) =>
-            (prevIndex - 1 + activeProject.images.length) % activeProject.images.length
-        );
-    };
 
 
     const swipeHandlers = useSwipeable({
@@ -258,6 +292,7 @@ export default function Home() {
 
             {/* Projects Section */}
             <section id="projects" className="py-16 px-4 bg-white">
+
                 <h2 className="text-3xl font-light mb-8 text-center">Zrealizowane projekty</h2>
                 <div className="px-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {projects.map((project, index) => (
@@ -398,7 +433,7 @@ export default function Home() {
                     onClick={closeModal}
                 >
                     <div
-                        className="relative w-full max-w-5xl h-[80vh] sm:h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 my-4 sm:my-6 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
+                        className="relative w-full max-w-5xl h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
@@ -414,7 +449,7 @@ export default function Home() {
                         {/* Show a loading spinner or message if images are still loading */}
                         {!imagesLoaded && (
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="loader">Loading...</div>
+                                <div className="loader"> </div>
                             </div>
                         )}
 
@@ -462,16 +497,12 @@ export default function Home() {
                                 ></div>
                             ))}
                         </div>
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">
-                            {activeProject.title}
-                        </h3>
-                        <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">
-                            {activeProject.description}
-                        </p>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
+                        <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">{activeProject.description}</p>
                     </div>
                 </div>
-
             )}
+
 
         </div>
     );
