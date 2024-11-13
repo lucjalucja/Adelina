@@ -66,14 +66,6 @@ export default function Home() {
         };
     }, [isModalOpen]);
 
-    useEffect(() => {
-        if (activeProject) {
-            activeProject.images.forEach((imageSrc) => {
-                const img = new Image();
-                img.src = imageSrc;
-            });
-        }
-    }, [activeProject]);
 
     const openModal = (project) => {
         setActiveProject(project);
