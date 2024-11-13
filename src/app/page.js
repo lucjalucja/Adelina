@@ -439,7 +439,7 @@ export default function Home() {
             <AboutSection/>
 
             {/* Contact Section */}
-            <div className="min-h-screen flex flex-col relative">
+            <div>
                 {/* Google Tag Manager Script */}
                 <Script src="https://www.googletagmanager.com/gtag/js?id=AW-16746824255" strategy="afterInteractive"/>
                 <Script id="gtag-init" strategy="afterInteractive">
@@ -452,36 +452,51 @@ export default function Home() {
                 </Script>
 
 
+                {/* Contact Section */}
                 <section id="contact" className="py-16 px-6 flex flex-col items-center bg-gray-100">
                     <h2 className="text-3xl font-light mb-4 text-gray-900">Kontakt</h2>
                     <p className="text-lg mb-4 text-gray-700 text-center">Umów się na niezobowiązującą wycenę</p>
                     <div className="text-lg mb-4 text-center">
-                        <p>Email:
+                        <p>
+                            Email:{" "}
                             <a
                                 href="mailto:adelina.drabot@gmail.com"
                                 className="text-pink-500 hover:underline"
                                 onClick={(e) => {
-                                    e.preventDefault(); // Prevent default navigation
+                                    e.preventDefault();
                                     handleEmailClick("mailto:adelina.drabot@gmail.com");
                                 }}
                             >
                                 adelina.drabot@gmail.com
                             </a>
                         </p>
-                        <p>Telefon:
+                        <p>
+                            Telefon:{" "}
                             <a
                                 href="tel:+48504381057"
                                 className="text-pink-500 hover:underline"
                                 onClick={(e) => {
-                                    e.preventDefault(); // Prevent default navigation
+                                    e.preventDefault();
                                     handlePhoneClick("tel:+48504381057");
                                 }}
                             >
                                 +48 504 381 057
                             </a>
                         </p>
+                        <p>
+                            Instagram:{" "}
+                            <a
+                                href="https://www.instagram.com/adelina.interiors/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-pink-500 hover:underline"
+                            >
+                                @adelina.interiors
+                            </a>
+                        </p>
                     </div>
                 </section>
+
             </div>
 
                 {/* Footer */}
