@@ -19,6 +19,12 @@ body {
 }
 
 
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+
+}
+
 .section-container {
   max-width: 1200px; /* For desktop layouts */
   margin: 0 auto;

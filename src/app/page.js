@@ -5,33 +5,92 @@ import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Analytics } from "@vercel/analytics/react"
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { useSwipeable } from 'react-swipeable';
+
+
 
 
 export default function Home() {
-    const projects = [
-        { src: "/project1.jpeg", title: "Mieszkanie 42 m²", description: "Zmiana układu funkcjonalnego, całkowita rearanżacja wnętrza" },
-        { src: "/project2.png", title: "Salon 45m²", description: "Stan deweloperski, kompleksowy projekt całego domu" },
-        { src: "/project3.jpg", title: "Łazienka 5m²", description: "Na parterze dla gości, kompleksowy projekt" },
-        { src: "/project4.jpg", title: "Sypialnia 18 m²", description: "Sypialnia w jasnych barwach, kompleksowy projekt" },
-    ];
 
+    const projects = [
+        {
+            title: "Mieszkanie Kartuska 32 m²",
+            description: "Zmiana układu funkcjonalnego, całkowita rearanżacja wnętrza",
+            images: ["/project1.jpeg", "/project1-2.jpg", "/project1-3.jpg","/project1-4.jpg", "/project1-5.jpg", "/project1-6.jpg", "/project1-7.jpg"]
+        },
+        {
+            title: "Dom Bojano 120m²",
+            description: "Stan deweloperski, kompleksowy projekt domu",
+            images : ["/project2.jpg", ...Array.from({ length: 14 }, (_, i) => `/project2-${i + 2}.jpg`)]
+        },
+        {
+            title: "Apartament Sol Marina 60m²",
+            description: "Stan deweloperski, kompleksowy projekt mieszkania inspriowany Hampton",
+            images : ["/project3.jpg", ...Array.from({ length: 4 }, (_, i) => `/project3-${i + 1}.jpg`)]
+        },
+        {
+            title: "Mieszkanie Srebrniki 38m²",
+            description: "Stan deweloperski, mieszkanie w jasnych barwach, kompleksowy projekt",
+            images: ["/project4.jpg", ...Array.from({ length: 5 }, (_, i) => `/project4-${i}.jpg`)]
+        },
+    ]
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeProject, setActiveProject] = useState(null);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const scrollToSection = (sectionId) => {
-        document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         setIsMenuOpen(false);
     };
 
-    const openModal = (index) => {
-        setActiveImageIndex(index);
+    // Prevent background scroll when modal is open
+    useEffect(() => {
+        if (isModalOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = ''; // Clean up on unmount
+        };
+    }, [isModalOpen]);
+
+    const openModal = (project) => {
+        setActiveProject(project);
+        setActiveImageIndex(0);
         setIsModalOpen(true);
     };
 
     const closeModal = useCallback(() => {
         setIsModalOpen(false);
+        setActiveProject(null);
     }, []);
+
+    const nextImage = useCallback(() => {
+        if (activeProject) {
+            setActiveImageIndex((prevIndex) =>
+                (prevIndex + 1) % activeProject.images.length
+            );
+        }
+    }, [activeProject]);
+
+    const prevImage = useCallback(() => {
+        if (activeProject) {
+            setActiveImageIndex((prevIndex) =>
+                (prevIndex - 1 + activeProject.images.length) % activeProject.images.length
+            );
+        }
+    }, [activeProject]);
+
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: nextImage,
+        onSwipedRight: prevImage,
+        preventDefaultTouchmoveEvent: true,
+        trackTouch: true
+    });
+
+
 
     // Internal AboutSection component
     const AboutSection = () => {
@@ -180,9 +239,11 @@ export default function Home() {
                 <h2 className="text-3xl font-light mb-8 text-center">Zrealizowane projekty</h2>
                 <div className="px-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {projects.map((project, index) => (
-                        <div key={index} className="cursor-pointer group overflow-hidden" onClick={() => openModal(index)}>
+                        <div key={index} className="cursor-pointer group overflow-hidden"
+                             onClick={() => openModal(project)}>
                             <div className="relative h-72 w-full">
-                                <Image src={project.src} alt={project.title} layout="fill" objectFit="cover" className="transform transition-transform duration-300 group-hover:scale-105" />
+                                <Image src={project.images[0]} alt={project.title} layout="fill" objectFit="cover"
+                                       className="transform transition-transform duration-300 group-hover:scale-105"/>
                             </div>
                             <h3 className="text-lg px-6 pt-4 pb-2 font-light mt-2">{project.title}</h3>
                             <p className="text-sm px-6 pb-8 text-gray-500">{project.description}</p>
@@ -308,16 +369,71 @@ export default function Home() {
             </footer>
 
             {/* Project Detail Modal */}
-            {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50" onClick={closeModal}>
-                    <div className="relative w-full max-w-3xl mx-4 bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-300 scale-100" onClick={(e) => e.stopPropagation()}>
-                        <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none" onClick={closeModal}>×</button>
-                        <Image src={projects[activeImageIndex].src} alt={projects[activeImageIndex].title} layout="responsive" width={1600} height={900} className="rounded-lg" />
-                        <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-2">{projects[activeImageIndex].title}</h3>
-                        <p className="text-gray-600 mb-6">{projects[activeImageIndex].description}</p>
+            {isModalOpen && activeProject && (
+                <div
+                    className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
+                    onClick={closeModal}
+                >
+                    <div
+                        className="relative w-full max-w-5xl mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg transform transition-transform duration-300 scale-100"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none"
+                            onClick={closeModal}
+                        >
+                            ×
+                        </button>
+                        <div
+                            {...swipeHandlers}
+                            className="relative w-full h-96 sm:h-[30rem] md:h-[36rem] lg:h-[40rem]"
+                        >
+                            <Image
+                                src={activeProject.images[activeImageIndex]}
+                                alt={activeProject.title}
+                                layout="fill"
+                                objectFit="contain"
+                                className="rounded-lg"
+                            />
+                            <button
+                                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    prevImage();
+                                }}
+                            >
+                                &#10094;
+                            </button>
+                            <button
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    nextImage();
+                                }}
+                            >
+                                &#10095;
+                            </button>
+                        </div>
+                        <div className="flex justify-center mt-4">
+                            {activeProject.images.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`w-2 h-2 mx-1 rounded-full ${
+                                        index === activeImageIndex ? 'bg-gray-800' : 'bg-gray-300'
+                                    }`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveImageIndex(index);
+                                    }}
+                                ></div>
+                            ))}
+                        </div>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
+                        <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">{activeProject.description}</p>
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
