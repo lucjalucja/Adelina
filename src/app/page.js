@@ -35,7 +35,21 @@ export default function Home() {
             images: ["/project4.jpg", ...Array.from({ length: 5 }, (_, i) => `/project4-${i}.jpg`)]
         },
     ]
+    const handlePhoneClick = () => {
+        if (typeof window !== "undefined" && window.gtag) {
+            window.gtag("event", "conversion", {
+                send_to: "AW-16746824255/PHONE_CLICK_LABEL", // Replace PHONE_CLICK_LABEL with the actual label for the phone click conversion
+            });
+        }
+    };
 
+    const handleEmailClick = () => {
+        if (typeof window !== "undefined" && window.gtag) {
+            window.gtag("event", "conversion", {
+                send_to: "AW-16746824255/EMAIL_CLICK_LABEL", // Replace EMAIL_CLICK_LABEL with the actual label for the email click conversion
+            });
+        }
+    };
 
     // Function to preload images for all projects
     const preloadImages = () => {
@@ -413,15 +427,19 @@ export default function Home() {
                 <h2 className="text-3xl font-light mb-4 text-gray-900">Kontakt</h2>
                 <p className="text-lg mb-4 text-gray-700 text-center">Umów się na niezobowiązującą wycenę</p>
                 <div className="text-lg mb-4 text-center">
-                    <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-pink-500 hover:underline">adelina.drabot@gmail.com</a></p>
-                    <p>Telefon: <a href="tel:+48504381057" className="text-pink-500 hover:underline">+48 504 381 057</a></p>
-                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">@adelina.interiors</a></p>
+                    <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-pink-500 hover:underline"
+                                 onClick={handleEmailClick}>adelina.drabot@gmail.com</a></p>
+                    <p>Telefon: <a href="tel:+48504381057" className="text-pink-500 hover:underline"
+                                   onClick={handlePhoneClick}>+48 504 381 057</a></p>
+                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank"
+                                     rel="noopener noreferrer"
+                                     className="text-pink-500 hover:underline">@adelina.interiors</a></p>
                 </div>
             </section>
 
             {/* Footer */}
             <footer className="py-8 flex flex-col items-center text-gray-700 text-sm">
-                <Image src="/logo.png" alt="Footer Logo" width={30} height={30} />
+                <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
                 <p className="mt-4 text-gray-700">© 2024 Adelina Interiors. All rights reserved.</p>
             </footer>
 
