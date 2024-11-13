@@ -38,6 +38,7 @@ export default function Home() {
     const [activeProject, setActiveProject] = useState(null);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
 
     const scrollToSection = (sectionId) => {
         document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
@@ -68,11 +69,21 @@ export default function Home() {
 
 
 
+    // Open modal and preload images
     const openModal = (project) => {
         setActiveProject(project);
         setActiveImageIndex(0);
         setIsModalOpen(true);
+        setImagesLoaded(false); // Reset loading state
+
+        // Preload all images in the project
+        project.images.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => setImagesLoaded(true); // Set as loaded when all images are cached
+        });
     };
+
 
     const closeModal = useCallback(() => {
         setIsModalOpen(false);
@@ -399,6 +410,14 @@ export default function Home() {
                         >
                             ×
                         </button>
+
+                        {/* Show a loading spinner or message if images are still loading */}
+                        {!imagesLoaded && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="loader">Loading...</div>
+                            </div>
+                        )}
+
                         <div
                             {...swipeHandlers}
                             className="relative w-full h-full flex items-center justify-center"
