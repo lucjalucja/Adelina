@@ -8,6 +8,21 @@
   "theme_color": "#007BFF",       // Primary theme color for your app
   "icons": [
     {
+          "src": "/favicon-16x16.png", // Use the correct path to your icon
+          "sizes": "16x16",
+          "type": "image/png"
+        }
+ {
+      "src": "/favicon.svg", // Use the correct path to your icon
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    }
+    {
+              "src": "/favicon.ico", // Use the correct path to your icon
+              "sizes": "64x64",
+              "type": "image/svg+xml"
+            }
+    {
       "src": "/favicon-192x192.png", // Use the correct path to your icon
       "sizes": "192x192",
       "type": "image/png"
