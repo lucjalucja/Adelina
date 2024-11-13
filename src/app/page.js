@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Analytics } from "@vercel/analytics/react"
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { useSwipeable } from 'react-swipeable';
+import Script from "next/script";
 
 
 
@@ -35,21 +36,7 @@ export default function Home() {
             images: ["/project4.jpg", ...Array.from({ length: 5 }, (_, i) => `/project4-${i}.jpg`)]
         },
     ]
-    const handlePhoneClick = () => {
-        if (typeof window !== "undefined" && window.gtag) {
-            window.gtag("event", "conversion", {
-                send_to: "AW-16746824255/PHONE_CLICK_LABEL", // Replace PHONE_CLICK_LABEL with the actual label for the phone click conversion
-            });
-        }
-    };
 
-    const handleEmailClick = () => {
-        if (typeof window !== "undefined" && window.gtag) {
-            window.gtag("event", "conversion", {
-                send_to: "AW-16746824255/EMAIL_CLICK_LABEL", // Replace EMAIL_CLICK_LABEL with the actual label for the email click conversion
-            });
-        }
-    };
 
     // Function to preload images for all projects
     const preloadImages = () => {
@@ -152,7 +139,36 @@ export default function Home() {
     }, []);
 
 
+    const handlePhoneClick = (url) => {
+        const callback = () => {
+            if (typeof url !== "undefined") {
+                window.location = url;
+            }
+        };
+        window.gtag("event", "conversion", {
+            send_to: "AW-16746824255/QnEqCKSm_-kZEL-EwbE-", // Phone conversion ID
+            value: 1.0,
+            currency: "PLN",
+            event_callback: callback,
+        });
+        return false;
+    };
 
+    // Conversion function for email click
+    const handleEmailClick = (url) => {
+        const callback = () => {
+            if (typeof url !== "undefined") {
+                window.location = url;
+            }
+        };
+        window.gtag("event", "conversion", {
+            send_to: "AW-16746824255/DJOXCKem_-kZEL-EwbE-", // Email conversion ID
+            value: 1.0,
+            currency: "PLN",
+            event_callback: callback,
+        });
+        return false;
+    };
     const swipeHandlers = useSwipeable({
         onSwipedLeft: nextImage,
         onSwipedRight: prevImage,
@@ -249,7 +265,7 @@ export default function Home() {
                             onClick={(e) => e.stopPropagation()} // Prevent overlaynpm i @vercel/analytics close on icon click
                             className="text-5xl mb-4" // Set icon size and add some margin below
                         >
-                            <FontAwesomeIcon icon={faInstagram} />
+                            <FontAwesomeIcon icon={faInstagram}/>
                         </a>
 
                         {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
@@ -270,7 +286,6 @@ export default function Home() {
                 )}
 
 
-
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-gray-700 text-base font-medium space-x-8">
                     {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
@@ -283,7 +298,8 @@ export default function Home() {
                             className="capitalize relative pb-1 hover:text-gray-900 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-300"
                         >
                             {section}
-                            <span className="block w-full h-[2px] bg-transparent hover:bg-gray-900 absolute bottom-0 left-0 transition-all duration-200 ease-in-out"></span>
+                            <span
+                                className="block w-full h-[2px] bg-transparent hover:bg-gray-900 absolute bottom-0 left-0 transition-all duration-200 ease-in-out"></span>
                         </button>
                     ))}
                 </nav>
@@ -420,108 +436,139 @@ export default function Home() {
             </section>
 
             {/* About Section */}
-            <AboutSection />
+            <AboutSection/>
 
             {/* Contact Section */}
-            <section id="contact" className="py-16 px-6 flex flex-col items-center bg-gray-100">
-                <h2 className="text-3xl font-light mb-4 text-gray-900">Kontakt</h2>
-                <p className="text-lg mb-4 text-gray-700 text-center">Umów się na niezobowiązującą wycenę</p>
-                <div className="text-lg mb-4 text-center">
-                    <p>Email: <a href="mailto:adelina.drabot@gmail.com" className="text-pink-500 hover:underline"
-                                 onClick={handleEmailClick}>adelina.drabot@gmail.com</a></p>
-                    <p>Telefon: <a href="tel:+48504381057" className="text-pink-500 hover:underline"
-                                   onClick={handlePhoneClick}>+48 504 381 057</a></p>
-                    <p>Instagram: <a href="https://www.instagram.com/adelina.interiors/" target="_blank"
-                                     rel="noopener noreferrer"
-                                     className="text-pink-500 hover:underline">@adelina.interiors</a></p>
-                </div>
-            </section>
+            <div className="min-h-screen flex flex-col relative">
+                {/* Google Tag Manager Script */}
+                <Script src="https://www.googletagmanager.com/gtag/js?id=AW-16746824255" strategy="afterInteractive"/>
+                <Script id="gtag-init" strategy="afterInteractive">
+                    {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'AW-16746824255');
+                `}
+                </Script>
 
-            {/* Footer */}
-            <footer className="py-8 flex flex-col items-center text-gray-700 text-sm">
-                <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
-                <p className="mt-4 text-gray-700">© 2024 Adelina Interiors. All rights reserved.</p>
-            </footer>
 
-            {/* Project Detail Modal */}
-            (
-            {isModalOpen && activeProject && (
-                <div
-                    className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
-                    onClick={closeModal}
-                >
+                <section id="contact" className="py-16 px-6 flex flex-col items-center bg-gray-100">
+                    <h2 className="text-3xl font-light mb-4 text-gray-900">Kontakt</h2>
+                    <p className="text-lg mb-4 text-gray-700 text-center">Umów się na niezobowiązującą wycenę</p>
+                    <div className="text-lg mb-4 text-center">
+                        <p>Email:
+                            <a
+                                href="mailto:adelina.drabot@gmail.com"
+                                className="text-pink-500 hover:underline"
+                                onClick={(e) => {
+                                    e.preventDefault(); // Prevent default navigation
+                                    handleEmailClick("mailto:adelina.drabot@gmail.com");
+                                }}
+                            >
+                                adelina.drabot@gmail.com
+                            </a>
+                        </p>
+                        <p>Telefon:
+                            <a
+                                href="tel:+48504381057"
+                                className="text-pink-500 hover:underline"
+                                onClick={(e) => {
+                                    e.preventDefault(); // Prevent default navigation
+                                    handlePhoneClick("tel:+48504381057");
+                                }}
+                            >
+                                +48 504 381 057
+                            </a>
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+                {/* Footer */}
+                <footer className="py-8 flex flex-col items-center text-gray-700 text-sm">
+                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
+                    <p className="mt-4 text-gray-700">© 2024 Adelina Interiors. All rights reserved.</p>
+                </footer>
+
+                {/* Project Detail Modal */}
+                (
+                {isModalOpen && activeProject && (
                     <div
-                        className="relative w-full max-w-5xl h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
-                        onClick={(e) => e.stopPropagation()}
+                        className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
+                        onClick={closeModal}
                     >
-                        <button
-                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none z-50 p-4"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                closeModal();
-                            }}
-                        >
-                            ×
-                        </button>
-
-                        {/* Show a loading spinner or message if images are still loading */}
-                        {!imagesLoaded && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="loader"> </div>
-                            </div>
-                        )}
-
                         <div
-                            {...swipeHandlers}
-                            className="relative w-full h-full flex items-center justify-center"
+                            className="relative w-full max-w-5xl h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <Image
-                                src={activeProject.images[activeImageIndex]}
-                                alt={activeProject.title}
-                                layout="fill"
-                                objectFit="contain"
-                                className={`rounded-lg ${animationDirection}`}
-                            />
                             <button
-                                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none z-50 p-4"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    prevImage();
+                                    closeModal();
                                 }}
                             >
-                                &#10094;
+                                ×
                             </button>
-                            <button
-                                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    nextImage();
-                                }}
+
+                            {/* Show a loading spinner or message if images are still loading */}
+                            {!imagesLoaded && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="loader"></div>
+                                </div>
+                            )}
+
+                            <div
+                                {...swipeHandlers}
+                                className="relative w-full h-full flex items-center justify-center"
                             >
-                                &#10095;
-                            </button>
-                        </div>
-                        <div className="flex justify-center mt-4">
-                            {activeProject.images.map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={`w-2 h-2 mx-1 rounded-full ${
-                                        index === activeImageIndex ? 'bg-gray-800' : 'bg-gray-300'
-                                    }`}
+                                <Image
+                                    src={activeProject.images[activeImageIndex]}
+                                    alt={activeProject.title}
+                                    layout="fill"
+                                    objectFit="contain"
+                                    className={`rounded-lg ${animationDirection}`}
+                                />
+                                <button
+                                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setActiveImageIndex(index);
+                                        prevImage();
                                     }}
-                                ></div>
-                            ))}
+                                >
+                                    &#10094;
+                                </button>
+                                <button
+                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        nextImage();
+                                    }}
+                                >
+                                    &#10095;
+                                </button>
+                            </div>
+                            <div className="flex justify-center mt-4">
+                                {activeProject.images.map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className={`w-2 h-2 mx-1 rounded-full ${
+                                            index === activeImageIndex ? 'bg-gray-800' : 'bg-gray-300'
+                                        }`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveImageIndex(index);
+                                        }}
+                                    ></div>
+                                ))}
+                            </div>
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
+                            <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">{activeProject.description}</p>
                         </div>
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
-                        <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">{activeProject.description}</p>
                     </div>
-                </div>
-            )}
+                )}
 
 
-        </div>
-    );
-}
+            </div>
+            );
+            }
