@@ -398,7 +398,7 @@ export default function Home() {
                     onClick={closeModal}
                 >
                     <div
-                        className="relative w-full max-w-5xl h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
+                        className="relative w-full max-w-5xl h-[80vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
