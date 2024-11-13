@@ -46,15 +46,26 @@ export default function Home() {
 
     // Prevent background scroll when modal is open
     useEffect(() => {
+        const preventScroll = (e) => e.preventDefault();
+
         if (isModalOpen) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Disable scrollbars
+            document.addEventListener('touchmove', preventScroll, { passive: false });
+            document.addEventListener('wheel', preventScroll, { passive: false });
         } else {
-            document.body.style.overflow = '';
+            document.body.style.overflow = 'auto'; // Restore scrollbars
+            document.removeEventListener('touchmove', preventScroll);
+            document.removeEventListener('wheel', preventScroll);
         }
+
         return () => {
-            document.body.style.overflow = ''; // Clean up on unmount
+            // Cleanup on unmount
+            document.body.style.overflow = 'auto';
+            document.removeEventListener('touchmove', preventScroll);
+            document.removeEventListener('wheel', preventScroll);
         };
     }, [isModalOpen]);
+
 
     const openModal = (project) => {
         setActiveProject(project);
