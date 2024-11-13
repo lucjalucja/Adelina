@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Script from "next/script"; // Import Next.js Script component
+import Script from "next/script";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -30,7 +30,7 @@ const icons = {
 };
 
 export const metadata = {
-    title: "Adelina Interiors | Projektant wnętrz | Aranżacja | Gdańsk, Trójmieście",
+    title: "Adelina Interiors | Projektant wnętrz | Aranżacja | Gdańsk, Trójmiasto",
     description: "Profesjonalne projektowanie wnętrz w Gdańsku i Trójmieście. Nowoczesne, stylowe aranżacje mieszkań, domów i przestrzeni komercyjnych.",
     keywords: "projektant wnętrz Gdańsk, architekt wnętrz Gdańsk, aranżacja wnętrz Gdańsk, projektowanie wnętrz Gdańsk, projektant wnętrz Trójmiasto, architekt wnętrz Trójmiasto, aranżacja wnętrz Trójmiasto, projektowanie wnętrz Trójmiasto",
     openGraph: {
@@ -81,18 +81,21 @@ export default function RootLayout({ children }) {
             <meta property="og:image:width" content={metadata.openGraph.images[0].width} />
             <meta property="og:image:height" content={metadata.openGraph.images[0].height} />
             <meta property="og:image:alt" content={metadata.openGraph.images[0].alt} />
-
-            {/* Google Tag (gtag.js) */}
-            <Script src="https://www.googletagmanager.com/gtag/js?id=AW-16746824255" strategy="afterInteractive" />
-            <Script id="gtag-init" strategy="afterInteractive">
-                {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'AW-16746824255');
-                `}
-            </Script>
         </Head>
+
+        {/* Google tag (gtag.js) */}
+        <Script
+            src="https://www.googletagmanager.com/gtag/js?id=AW-16746824255"
+            strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+            {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'AW-16746824255');
+            `}
+        </Script>
 
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
