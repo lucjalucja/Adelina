@@ -33,7 +33,7 @@ export default function Home() {
         {
             title: "Mieszkanie Srebrniki 38m²",
             description: "Stan deweloperski, mieszkanie w jasnych barwach, kompleksowy projekt",
-            images: ["/project4.jpg", ...Array.from({ length: 5 }, (_, i) => `/project4-${i}.jpg`)]
+            images: ["/project4.jpg", ...Array.from({ length: 6 }, (_, i) => `/project4-${i}.jpg`)]
         },
     ]
 
@@ -57,10 +57,7 @@ export default function Home() {
         });
     };
 
-    // Preload images when the component mounts
-    useEffect(() => {
-        preloadImages();
-    }, []);
+
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
