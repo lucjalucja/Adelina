@@ -1,16 +1,21 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+
+import {useState, useCallback, useEffect, useRef} from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { useSwipeable } from 'react-swipeable';
 import Script from "next/script";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper"; // Import SwiperCore and modules
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import {Navigation, Pagination} from "swiper/modules";
 
 
-
-
+SwiperCore.use([Navigation, Pagination]);
 export default function Home() {
 
 
@@ -37,33 +42,43 @@ export default function Home() {
         },
     ]
 
-
-    // Function to preload images for all projects
-    const preloadImages = () => {
-        let loadedCount = 0;
-        const totalImages = projects.reduce((acc, project) => acc + project.images.length, 0);
-
-        projects.forEach((project) => {
-            project.images.forEach((src) => {
-                const img = new window.Image();
-                img.src = src;
-                img.onload = () => {
-                    loadedCount++;
-                    if (loadedCount === totalImages) {
-                        setImagesLoaded(true); // Set to true when all images are preloaded
-                    }
-                };
-            });
-        });
-    };
-
-
-
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeProject, setActiveProject] = useState(null);
+    const modalRef = useRef(null);
+
+    const openModal = (project) => {
+        setActiveProject(project);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = useCallback((e) => {
+        // Only close if click is outside of modal content
+
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+            setIsModalOpen(false);
+            setActiveProject(null);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isModalOpen) {
+            document.addEventListener("mousedown", closeModal);
+        } else {
+            document.removeEventListener("mousedown", closeModal);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", closeModal);
+        };
+    }, [isModalOpen, closeModal]);
+
+
+
+
+
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [imagesLoaded, setImagesLoaded] = useState(false);
+
 
     const scrollToSection = (sectionId) => {
         document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
@@ -94,46 +109,10 @@ export default function Home() {
 
 
 
-    // Open modal and preload images
-    const openModal = (project) => {
-        setActiveProject(project);
-        setActiveImageIndex(0);
-        setIsModalOpen(true);
-        setImagesLoaded(false); // Reset loading state
 
-        // Preload all images in the project
-        project.images.forEach((src) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => setImagesLoaded(true); // Set as loaded when all images are cached
-        });
-    };
-
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const [animationDirection, setAnimationDirection] = useState("");
-
-// Helper function to reset the animation direction
-    const resetAnimation = (direction) => {
-        setAnimationDirection(""); // Clear current animation
-        setTimeout(() => setAnimationDirection(direction), 10); // Apply new direction
-    };
 
 // Functions to handle image navigation with animation
-    const nextImage = () => {
-        resetAnimation("slide-in-right");
-        setActiveImageIndex((prevIndex) => (prevIndex + 1) % activeProject.images.length);
-    };
 
-    const prevImage = () => {
-        resetAnimation("slide-in-left");
-        setActiveImageIndex((prevIndex) =>
-            (prevIndex - 1 + activeProject.images.length) % activeProject.images.length
-        );
-    };
-    const closeModal = useCallback(() => {
-        setIsModalOpen(false);
-        setActiveProject(null);
-    }, []);
 
 
     const handlePhoneClick = (url) => {
@@ -166,12 +145,6 @@ export default function Home() {
         });
         return false;
     };
-    const swipeHandlers = useSwipeable({
-        onSwipedLeft: nextImage,
-        onSwipedRight: prevImage,
-        preventDefaultTouchmoveEvent: true,
-        trackTouch: true
-    });
 
 
 
@@ -504,83 +477,53 @@ export default function Home() {
 
                 {/* Project Detail Modal */}
                 (
-                {isModalOpen && activeProject && (
+
+            {isModalOpen && activeProject && (
+                <div
+                    className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
+                >
                     <div
-                        className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black bg-opacity-50"
-                        onClick={closeModal}
+                        ref={modalRef} // Attach ref to modal content
+                        className="relative w-full max-w-5xl h-[90vh] mx-4 bg-white p-4 rounded-lg shadow-lg flex flex-col justify-center"
                     >
-                        <div
-                            className="relative w-full max-w-5xl h-[90vh] mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-20 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-center transform transition-transform duration-300 scale-100"
-                            onClick={(e) => e.stopPropagation()}
+                        <button
+                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none z-50 p-4"
+                            onClick={() => {
+                                setIsModalOpen(false);
+                                setActiveProject(null);
+                            }}
                         >
-                            <button
-                                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none z-50 p-4"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    closeModal();
-                                }}
-                            >
-                                ×
-                            </button>
+                            ×
+                        </button>
 
-                            {/* Show a loading spinner or message if images are still loading */}
-                            {!imagesLoaded && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="loader"></div>
-                                </div>
-                            )}
+                        {/* Swiper with Navigation, Pagination, and Loop */}
+                        <Swiper
+                            navigation={true} // Enable navigation
+                            pagination={{ clickable: true }} // Enable pagination
+                            loop={true} // Enable looping
+                            className="w-full h-full"
+                        >
+                            {activeProject.images.map((image, index) => (
+                                <SwiperSlide key={index}>
+                                    <Image
+                                        src={image}
+                                        alt={activeProject.title}
+                                        layout="fill"
+                                        objectFit="contain"
+                                        className="rounded-lg"
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
 
-                            <div
-                                {...swipeHandlers}
-                                className="relative w-full h-full flex items-center justify-center"
-                            >
-                                <Image
-                                    src={activeProject.images[activeImageIndex]}
-                                    alt={activeProject.title}
-                                    layout="fill"
-                                    objectFit="contain"
-                                    className={`rounded-lg ${animationDirection}`}
-                                />
-                                <button
-                                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        prevImage();
-                                    }}
-                                >
-                                    &#10094;
-                                </button>
-                                <button
-                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        nextImage();
-                                    }}
-                                >
-                                    &#10095;
-                                </button>
-                            </div>
-                            <div className="flex justify-center mt-4">
-                                {activeProject.images.map((_, index) => (
-                                    <div
-                                        key={index}
-                                        className={`w-2 h-2 mx-1 rounded-full ${
-                                            index === activeImageIndex ? 'bg-gray-800' : 'bg-gray-300'
-                                        }`}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setActiveImageIndex(index);
-                                        }}
-                                    ></div>
-                                ))}
-                            </div>
-                            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
-                            <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">{activeProject.description}</p>
-                        </div>
+                        <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-2">{activeProject.title}</h3>
+                        <p className="text-sm text-gray-600 mb-6">{activeProject.description}</p>
                     </div>
-                )}
+                </div>
+            )}
+        </div>
 
 
-            </div>
+
             );
             }
