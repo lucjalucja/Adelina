@@ -484,7 +484,7 @@ export default function Home() {
                 >
                     <div
                         ref={modalRef} // Attach ref to modal content
-                        className="relative w-full max-w-5xl h-[90vh] mx-4 bg-white p-4 rounded-lg shadow-lg flex flex-col justify-center"
+                        className="relative w-full max-w-5xl h-[70vh] mx-4 bg-white p-4 rounded-lg shadow-lg flex flex-col justify-center"
                     >
                         <button
                             className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none z-50 p-4"
