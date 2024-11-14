@@ -255,3 +255,21 @@ section#contact .text-center {
 }
 
 
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: darkred !important;
+}/* Custom arrow color */
+
+.swiper-pagination-bullet-active {
+  background-color: darkred !important;
+}/* Active dot color */
+
+@media (max-width: 768px){
+  .swiper-button-next,
+  .swiper-button-prev {
+      transform: scale(0.5)
+  }/* Custom arrow color */
+
+}
