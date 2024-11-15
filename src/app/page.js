@@ -187,6 +187,10 @@ export default function Home() {
                 </div>
 
                 {/* Elfsight Reviews Widget Positioned Below Entire Section */}
+                <div className="w-2/3 mt-8 flex justify-center">
+                    <div className="elfsight-app-bf647db4-bcf5-45eb-8dbd-ae46dce9474c w-full md:w-2/3"
+                         data-elfsight-app-lazy="true"></div>
+                </div>
                 <div className="w-full mt-8 flex justify-center">
                     <div className="elfsight-app-5ec524fd-64a3-4cb6-aba7-485d6b227683 w-full md:w-2/3"
                          data-elfsight-app-lazy="true"></div>
@@ -199,7 +203,7 @@ export default function Home() {
 
     return (
         <div className="min-h-screen flex flex-col relative">
-            {/* Header Section */}
+        {/* Header Section */}
             <header className="flex justify-between items-center px-6 py-2 bg-white shadow-md fixed w-full z-50">
                 <div className="p-1 cursor-pointer">
                     {/* Logo with click to scroll to hero */}
@@ -255,7 +259,10 @@ export default function Home() {
                     </div>
                 )}
 
-
+                <div>
+                    <div className="elfsight-app-88b50532-4b2b-41ac-806f-70c7ca11d122 w-full md:w-2/3"
+                         data-elfsight-app-lazy="true"></div>
+                </div>
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-gray-700 text-base font-medium space-x-8">
                     {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
