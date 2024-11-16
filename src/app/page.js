@@ -203,7 +203,7 @@ export default function Home() {
 
     return (
         <div className="min-h-screen flex flex-col relative">
-        {/* Header Section */}
+            {/* Header Section */}
             <header className="flex justify-between items-center px-6 py-2 bg-white shadow-md fixed w-full z-50">
                 <div className="p-1 cursor-pointer">
                     {/* Logo with click to scroll to hero */}
@@ -259,10 +259,7 @@ export default function Home() {
                     </div>
                 )}
 
-                <div>
-                    <div className="elfsight-app-88b50532-4b2b-41ac-806f-70c7ca11d122 w-full md:w-2/3"
-                         data-elfsight-app-lazy="true"></div>
-                </div>
+
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex md:items-center text-gray-700 text-base font-medium space-x-8">
                     {["projekty", "o mnie", "oferta", "kontakt"].map((section, index) => (
@@ -281,6 +278,11 @@ export default function Home() {
                     ))}
                 </nav>
             </header>
+
+            <div>
+                <div className="elfsight-app-88b50532-4b2b-41ac-806f-70c7ca11d122 w-full md:w-2/3"
+                     data-elfsight-app-lazy="true"></div>
+            </div>
 
             {/* Hero Section */}
             <section id="hero" className="hero-section">
@@ -476,14 +478,14 @@ export default function Home() {
 
             </div>
 
-                {/* Footer */}
-                <footer className="py-8 flex flex-col items-center text-gray-700 text-sm">
-                    <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
-                    <p className="mt-4 text-gray-700">© 2024 Adelina Interiors. All rights reserved.</p>
-                </footer>
+            {/* Footer */}
+            <footer className="py-8 flex flex-col items-center text-gray-700 text-sm">
+                <Image src="/logo.png" alt="Footer Logo" width={30} height={30}/>
+                <p className="mt-4 text-gray-700">© 2024 Adelina Interiors. All rights reserved.</p>
+            </footer>
 
-                {/* Project Detail Modal */}
-                (
+            {/* Project Detail Modal */}
+            (
 
             {isModalOpen && activeProject && (
                 <div
@@ -506,7 +508,7 @@ export default function Home() {
                         {/* Swiper with Navigation, Pagination, and Loop */}
                         <Swiper
                             navigation={true} // Enable navigation
-                            pagination={{ clickable: true }} // Enable pagination
+                            pagination={{clickable: true}} // Enable pagination
                             loop={true} // Enable looping
                             className="w-full h-full"
                         >
@@ -532,6 +534,5 @@ export default function Home() {
         </div>
 
 
-
-            );
-            }
+    );
+}
